@@ -1,14 +1,71 @@
 <!doctype html>
-<html lang="fr" id="top">
+<html lang="fr">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Documentation · GuidedStep JS</title>
-        <link rel="icon" type="image/png" href="logo.png" />
+
+        <!-- ============ TITRE SEO ============ -->
+        <title>GuidedStep.js - Bibliothèque de tutoriels interactifs JavaScript | Documentation officielle</title>
+
+        <!-- ============ META DESCRIPTION SEO ============ -->
         <meta
             name="description"
-            content="Documentation officielle de GuidedStep : bibliothèque JavaScript zéro dépendance pour créer des tutoriels et parcours d'onboarding interactifs."
+            content="GuidedStep.js est une bibliothèque JavaScript zéro dépendance pour créer des tutoriels interactifs et des parcours d'onboarding. Documentation complète, API, exemples et intégration React/Vue/Angular."
         />
+
+        <!-- ============ META MOTS-CLÉS ============ -->
+        <meta
+            name="keywords"
+            content="guidedstep, tutoriel javascript, onboarding interactif, guide utilisateur, bibliothèque js, zero dépendance, react tutorial, vue tutorial"
+        />
+
+        <!-- ============ ROBOTS ============ -->
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+
+        <!-- ============ OPEN GRAPH (Facebook/LinkedIn) ============ -->
+        <meta property="og:title" content="GuidedStep.js - Bibliothèque de tutoriels interactifs JavaScript" />
+        <meta property="og:description" content="Créez des parcours d'onboarding et des tutoriels interactifs avec GuidedStep.js. Zéro dépendance, accessible et responsive." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://guidedstep.js.org" />
+        <meta property="og:image" content="https://guidedstep.js.org/og-image.png" />
+
+        <!-- ============ TWITTER CARDS ============ -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="GuidedStep.js - Bibliothèque de tutoriels interactifs JavaScript" />
+        <meta name="twitter:description" content="Créez des parcours d'onboarding et des tutoriels interactifs avec GuidedStep.js. Zéro dépendance, accessible et responsive." />
+        <meta name="twitter:image" content="https://guidedstep.js.org/og-image.png" />
+
+        <!-- ============ CANONICAL ============ -->
+        <link rel="canonical" href="https://guidedstep.js.org/" />
+
+        <!-- ============ FAVICON ============ -->
+        <link rel="icon" type="image/png" href="logo.png" />
+        <link rel="apple-touch-icon" href="logo.png" />
+
+        <!-- ============ STRUCTURED DATA (JSON-LD) ============ -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "GuidedStep.js",
+            "description": "Bibliothèque JavaScript zéro dépendance pour créer des tutoriels interactifs et des parcours d'onboarding",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "All",
+            "author": {
+                "@type": "Person",
+                "name": "Omer Link"
+            },
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            }
+        }
+        </script>
+
+        <!-- ============ SITEMAP ============ -->
+        <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -320,7 +377,6 @@
                 }
             }
 
-            /* Sidebar */
             .sidebar {
                 position: sticky;
                 top: calc(var(--header-h) + 20px);
@@ -385,7 +441,6 @@
                 color: var(--accent);
             }
 
-            /* Drawer Mobile */
             .drawer-backdrop {
                 position: fixed;
                 inset: 0;
@@ -440,7 +495,7 @@
             }
 
             /* ================================================================
-               6. CONTENU PRINCIPAL & ANIMATIONS SPA
+               6. CONTENU PRINCIPAL
                ================================================================ */
             .content {
                 min-width: 0;
@@ -514,7 +569,6 @@
                 font-size: 13px;
             }
 
-            /* Features Grid */
             .feature-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -560,7 +614,6 @@
                 margin: 0;
             }
 
-            /* Table */
             .table-wrap {
                 overflow-x: auto;
                 border: 1px solid var(--line);
@@ -610,7 +663,6 @@
                 border-radius: 6px;
             }
 
-            /* Code Blocks */
             .code-block {
                 border-radius: 10px;
                 overflow: hidden;
@@ -702,7 +754,6 @@
                 white-space: pre;
             }
 
-            /* Syntax Highlighting Tokens */
             .tok-c {
                 color: #8b949e;
                 font-style: italic;
@@ -723,7 +774,6 @@
                 color: #79c0ff;
             }
 
-            /* API List */
             .api-list {
                 list-style: none;
                 margin: 0;
@@ -757,7 +807,6 @@
                 font-weight: 600;
             }
 
-            /* Frameworks */
             .fw-block {
                 margin-bottom: 32px;
             }
@@ -792,7 +841,6 @@
                 color: #dd0031;
             }
 
-            /* Callout */
             .callout {
                 display: flex;
                 gap: 14px;
@@ -835,10 +883,65 @@
                 padding: 1px 6px;
                 color: var(--ink);
             }
+            .callout.ai-install {
+                background: linear-gradient(
+                    135deg,
+                    var(--accent-soft),
+                    rgba(20, 20, 20, 0.04)
+                );
+                border-color: var(--line);
+            }
+            .callout.ai-install .callout-icon {
+                color: var(--accent);
+            }
+            .callout.ai-install p {
+                margin: 0 0 14px;
+                font-size: 13.5px;
+                color: var(--ink-soft);
+                line-height: 1.6;
+            }
 
-            /* ================================================================
-               "BIENTÔT DISPONIBLE" — Floutage + Toggle réactif
-               ================================================================ */
+            .ai-prompt {
+                background: var(--code-bg);
+                border: 1px solid var(--line);
+                border-radius: 10px;
+                padding: 16px 18px;
+                margin: 0 0 20px;
+            }
+            .ai-prompt h4 {
+                margin: 0 0 12px;
+                font-size: 14px;
+                font-weight: 700;
+                color: var(--code-ink);
+            }
+            .ai-prompt pre.code {
+                margin: 0;
+                background: transparent;
+                padding: 0;
+                max-height: 420px;
+                overflow: auto;
+            }
+            .ai-prompt .code {
+                font-size: 12.5px;
+                line-height: 1.65;
+                white-space: pre;
+            }
+            @media (max-width: 640px) {
+                .callout.ai-install {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                .callout.ai-install .btn {
+                    width: 100%;
+                }
+                .ai-prompt {
+                    padding: 12px;
+                }
+                .ai-prompt pre.code {
+                    max-height: 320px;
+                }
+            }
+
             .soon {
                 position: relative;
             }
@@ -924,9 +1027,6 @@
                 transform: translateX(18px);
             }
 
-            /* ================================================================
-               FICHIERS SERVEUR (copie d'URL)
-               ================================================================ */
             .server-files {
                 display: grid;
                 gap: 10px;
@@ -975,7 +1075,6 @@
                 flex-shrink: 0;
             }
 
-            /* Footer */
             .footer {
                 border-top: 1px solid var(--line);
                 background: var(--surface);
@@ -1029,7 +1128,7 @@
 
     <body>
         <!-- HEADER -->
-        <header class="header">
+        <header class="header" role="banner">
             <div class="container header-inner">
                 <a
                     class="brand"
@@ -1046,15 +1145,15 @@
                     GuidedStep <span class="version-badge">v2.4.0</span>
                 </a>
 
-                <div class="header-nav">
+                <nav class="header-nav" aria-label="Navigation principale">
                     <a href="#introduction">Docs</a>
                     <a href="#api-js">API</a>
                     <a href="#frameworks">Frameworks</a>
                     <a
                         class="github-link"
-                        href="https://github.com"
+                        href="https://github.com/omerlink/guidedstep.js"
                         target="_blank"
-                        rel="noopener"
+                        rel="noopener noreferrer"
                         style="
                             display: flex;
                             align-items: center;
@@ -1097,7 +1196,7 @@
                             <path d="M4 7h16M4 12h16M4 17h16" />
                         </svg>
                     </button>
-                </div>
+                </nav>
             </div>
         </header>
 
@@ -1135,13 +1234,13 @@
         </aside>
 
         <!-- HERO -->
-        <section class="hero">
+        <section class="hero" aria-labelledby="hero-title">
             <div class="container hero-inner">
                 <span class="hero-badge"
                     ><span class="dot" aria-hidden="true"></span> Zéro
                     dépendance · Prêt pour la production</span
                 >
-                <h1>
+                <h1 id="hero-title">
                     Documentation officielle de
                     <span
                         style="
@@ -1203,9 +1302,9 @@
         <div class="container layout">
             <aside class="sidebar" aria-label="Sommaire"></aside>
 
-            <main class="content">
+            <main class="content" id="main-content">
                 <!-- INTRODUCTION -->
-                <section id="introduction" class="section">
+                <section id="introduction" class="section" aria-labelledby="intro-title">
                     <div class="section-head">
                         <span class="kicker"
                             ><svg
@@ -1224,7 +1323,7 @@
                             </svg>
                             Pour commencer</span
                         >
-                        <h2>Introduction</h2>
+                        <h2 id="intro-title">Introduction</h2>
                         <p>
                             Comprendre l'approche déclarative de GuidedStep en
                             quelques minutes.
@@ -1328,7 +1427,7 @@
                 </section>
 
                 <!-- INSTALLATION -->
-                <section id="installation" class="section">
+                <section id="installation" class="section" aria-labelledby="install-title">
                     <div class="section-head">
                         <span class="kicker"
                             ><svg
@@ -1351,11 +1450,130 @@
                             </svg>
                             Démarrage</span
                         >
-                        <h2>Installation</h2>
+                        <h2 id="install-title">Installation</h2>
                         <p>
                             Intégrez GuidedStep via votre serveur (fichiers
                             locaux) ou directement en CDN.
                         </p>
+                    </div>
+
+                    <div class="callout ai-install">
+                        <span class="callout-icon"
+                            ><svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M5 8l.5 2.5L8 11l-2.5.5L5 14l-.5-2.5L2 11l2.5-.5z" />
+                                <path d="M12 2a7.5 7.5 0 0 1 6 6.5v.5a2 2 0 0 0 1.5 1.9l1 .3a3 3 0 0 1 0 5.8l-1 .3a2 2 0 0 0-1.5 1.9v.3A7 7 0 0 1 13 22.9V6" />
+                            </svg></span
+                        >
+                        <div>
+                            <h4>Installer par IA — un prompt prêt à l'emploi</h4>
+                            <p>
+                                Copiez ce prompt et collez-le dans votre outil
+                                IA préféré (ChatGPT, Claude, Copilot, Gemini…).
+                                Il donne toutes les instructions pour installer
+                                le projet, implémenter le tutoriel GuidedStep,
+                                gérer le <strong>responsive</strong> des pages et
+                                <strong>gérer les formulaires</strong> si votre
+                                code est incompatible.
+                            </p>
+                            <button
+                                class="btn btn-primary"
+                                type="button"
+                                data-ai-prompt
+                                data-ai-target="ai-prompt-install"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <rect
+                                        x="9"
+                                        y="9"
+                                        width="13"
+                                        height="13"
+                                        rx="2"
+                                    />
+                                    <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                                </svg>
+                                Copier le prompt IA
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="ai-prompt" id="ai-prompt-install">
+                        <h4>Prompt : installer GuidedStep + implémenter le tutoriel</h4>
+                        <pre class="code"><code>Tu es un expert front-end. Intègre la bibliothèque
+GUIDEDSTEP (guidedstep.js) dans mon projet web existant
+pour créer un tutoriel / parcours d'onboarding interactif.
+Suis scrupuleusement ces étapes :
+
+1) INSTALLATION
+- Récupère guidedstep.js et guidedstep.css (via npm :
+  `npm install guidedstep.js`, ou en copiant les 2 fichiers
+  dans le projet).
+- Ajoute dans le `&lt;head&gt;` : le lien CSS
+  `&lt;link rel="stylesheet" href="guidedstep.css"&gt;`.
+- Ajoute juste avant `&lt;/body&gt;` :
+  `&lt;script src="guidedstep.js"&gt;&lt;/script&gt;`.
+- Ne casse ni ne renomme aucun fichier existant du projet.
+
+2) IMPLÉMENTATION DU TUTORIEL (attributs gs-*)
+- Ajoute l'attribut `gs-step="1", "2", "3"...` dans l'ordre
+  sur les éléments à expliquer (boutons, menus, formulaires…).
+- Sur chaque élément ajoute `gs-title="..."` (titre) et
+  `gs-content="..."` (explication) si nécessaire.
+- Optionnel : `gs-position="top|bottom|left|right|auto"` et
+  `gs-transition="..."` pour la position de la carte.
+- Initialise le tutoriel au chargement de la page :
+  GuidedStep.init({ persist: true, overlayMode: 'blur',
+  overlayBlur: 8, theme: { primaryColor: '#000000',
+  borderRadius: '12px' } });
+- Démarre le tutoriel : GuidedStep.start(0); (ou sur le clic
+  d'un bouton via addEventListener).
+
+3) BOUTON FLOTTANT DE RELANCE
+- Ajoute l'attribut `gs-player="true"` sur la balise
+  `&lt;body&gt;`
+  pour afficher un bouton flottant "Revoir le guide" qui
+  relance le tutoriel (GuidedStep.restart()).
+
+4) RESPONSIVE DES PAGES
+- Assure-toi que le tutoriel ET ma page restent parfaitement
+  alignés sur mobile, tablette et desktop.
+- Laisse les règles CSS mobiles de GuidedStep (media max-640px)
+  en place ; ne les supprime pas.
+- Vérifie que les cartes d'aide ne débordent pas de l'écran
+  et restent lisibles sur petits écrans.
+
+5) GESTION DES FORMULAIRES
+- Si un élément du tutoriel est un FORMULAIRE ou un champ
+  (input/select/textarea), NE BLOQUE PAS la saisie : place
+  l'étape gs-step sur le bon élément visible, sans interférer
+  avec les événements onchange/onsubmit.
+- Si un code existant est INCOMPATIBLE avec GuidedStep
+  (ex. conflit de z-index, element caché, scroll figé),
+  corrige-le proprement : remonte le z-index de la carte,
+  libère le scroll après coup, et assure la compatibilité
+  sans casser les scripts existants.
+
+6) VÉRIFICATIONS FINALES
+- Teste la navigation (clavier : Échap, Flèches gauche/droite).
+- Vérifie que la progression est sauvegardée (localStorage)
+  et que le bouton flottant réapparaît après la fin du guide.
+- Livre les fichiers modifiés + un bref résumé de ce qui a
+  été changé.</code></pre>
                     </div>
 
                     <div class="callout">
@@ -1536,7 +1754,7 @@
                 </section>
 
                 <!-- UTILISATION DE BASE -->
-                <section id="utilisation-base" class="section">
+                <section id="utilisation-base" class="section" aria-labelledby="usage-title">
                     <div class="section-head">
                         <span class="kicker"
                             ><svg
@@ -1553,7 +1771,7 @@
                             </svg>
                             Démarrage</span
                         >
-                        <h2>Utilisation de base</h2>
+                        <h2 id="usage-title">Utilisation de base</h2>
                         <p>
                             Deux étapes suffisent : baliser le HTML, puis
                             initialiser en JavaScript.
@@ -1676,20 +1894,38 @@
 &lt;/body&gt;</code></pre>
                     </div>
 
-                    <div class="note">
-                        <p>
-                            <strong>Comment ça marche ?</strong> Le bouton
-                            flottant apparaît dès le chargement du script. Un
-                            clic relance le tutoriel depuis la première étape
-                            (appelle <code>GuidedStep.restart()</code>). Il est
-                            masqué automatiquement pendant que le guide est
-                            actif, puis réaffiché à la fin. L'attribut est
-                            <strong>optionnel</strong> : sans lui, aucun bouton
-                            n'est créé et le guide ne démarre que via
-                            JavaScript. Le bouton utilise la classe
-                            <code>.guidedstep-fab</code> pour la
-                            personnalisation.
-                        </p>
+                    <div class="callout">
+                        <span class="callout-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <circle cx="12" cy="12" r="9" />
+                                <path
+                                    d="M12 8h.01M9.5 15c.8 1 1.6 1.5 2.5 1.5s1.7-.5 2.5-1.5"
+                                />
+                            </svg>
+                        </span>
+                        <div>
+                            <h4>Comment ça marche ?</h4>
+                            <p>
+                                Le bouton flottant apparaît dès le chargement du script. Un
+                                clic relance le tutoriel depuis la première étape
+                                (appelle <code>GuidedStep.restart()</code>). Il est
+                                masqué automatiquement pendant que le guide est
+                                actif, puis réaffiché à la fin. L'attribut est
+                                <strong>optionnel</strong> : sans lui, aucun bouton
+                                n'est créé et le guide ne démarre que via
+                                JavaScript. Le bouton utilise la classe
+                                <code>.guidedstep-fab</code> pour la
+                                personnalisation.
+                            </p>
+                        </div>
                     </div>
 
                     <h3 class="sub section">3. Initialisation JavaScript</h3>
@@ -1743,7 +1979,7 @@ document.getElementById('start-tour').addEventListener('click', () => {
                 </section>
 
                 <!-- API JS -->
-                <section id="api-js" class="section">
+                <section id="api-js" class="section" aria-labelledby="api-title">
                     <div class="section-head">
                         <span class="kicker"
                             ><svg
@@ -1759,7 +1995,7 @@ document.getElementById('start-tour').addEventListener('click', () => {
                             </svg>
                             Référence</span
                         >
-                        <h2>API JavaScript</h2>
+                        <h2 id="api-title">API JavaScript</h2>
                         <p>
                             Le contrôle du parcours repose sur un petit jeu de
                             fonctions stables.
@@ -1911,7 +2147,7 @@ document.getElementById('start-tour').addEventListener('click', () => {
                 </section>
 
                 <!-- FRAMEWORKS -->
-                <section id="frameworks" class="section">
+                <section id="frameworks" class="section" aria-labelledby="fw-title">
                     <div class="section-head">
                         <span class="kicker"
                             ><svg
@@ -1934,7 +2170,7 @@ document.getElementById('start-tour').addEventListener('click', () => {
                             </svg>
                             Intégration</span
                         >
-                        <h2>Intégration aux frameworks</h2>
+                        <h2 id="fw-title">Intégration aux frameworks</h2>
                         <p>
                             GuidedStep fonctionne nativement partout. Voici les
                             modèles recommandés.
@@ -2199,13 +2435,13 @@ declare const GuidedStep: any;
 
 @Component({
   selector: 'app-root',
-  template: `
+  template: \`
     &lt;button (click)="startTour()" class="btn"&gt;Guide&lt;/button&gt;
 
     &lt;header gs-step="1" gs-title="En-tête" gs-content="Menu principal"&gt;
       &lt;h1&gt;Mon App&lt;/h1&gt;
     &lt;/header&gt;
-  `,
+  \`,
 })
 export class AppComponent implements AfterViewInit {
   ngAfterViewInit() {
@@ -2225,7 +2461,7 @@ export class AppComponent implements AfterViewInit {
                 </section>
 
                 <!-- CSS VARIABLES -->
-                <section id="css-variables" class="section">
+                <section id="css-variables" class="section" aria-labelledby="css-title">
                     <div class="section-head">
                         <span class="kicker"
                             ><svg
@@ -2242,7 +2478,7 @@ export class AppComponent implements AfterViewInit {
                             </svg>
                             Personnalisation</span
                         >
-                        <h2>Personnalisation CSS</h2>
+                        <h2 id="css-title">Personnalisation CSS</h2>
                         <p>
                             Toutes les propriétés visuelles sont contrôlées par
                             des variables CSS surchargeables.
@@ -2310,7 +2546,7 @@ body.guidedstep-active {
                 </section>
 
                 <!-- ACCESSIBILITÉ -->
-                <section id="accessibilite" class="section">
+                <section id="accessibilite" class="section" aria-labelledby="a11y-title">
                     <div class="section-head">
                         <span class="kicker"
                             ><svg
@@ -2327,7 +2563,7 @@ body.guidedstep-active {
                             </svg>
                             Engagement</span
                         >
-                        <h2>Accessibilité (a11y)</h2>
+                        <h2 id="a11y-title">Accessibilité (a11y)</h2>
                         <p>
                             Accessibilité au cœur du produit, testée contre les
                             bonnes pratiques WCAG.
@@ -2384,7 +2620,7 @@ body.guidedstep-active {
         </div>
 
         <!-- FOOTER -->
-        <footer class="footer">
+        <footer class="footer" role="contentinfo">
             <div class="container footer-inner">
                 <span class="footer-brand">
                     <span class="brand-mark">
@@ -2405,9 +2641,7 @@ body.guidedstep-active {
                 </span>
                 <p>&copy; 2026 GuidedStep — distribué sous licence MIT.</p>
                 <div class="footer-links">
-                    <a href="https://github.com" target="_blank" rel="noopener"
-                        >GitHub</a
-                    >
+                    <a href="https://github.com/omerlink/guidedstep.js" target="_blank" rel="noopener noreferrer">GitHub</a>
                     <a href="#installation">Changelog</a>
                     <a href="#installation">Licence</a>
                 </div>
@@ -2488,7 +2722,7 @@ body.guidedstep-active {
                 buildNav(document.querySelector(".drawer-nav"));
 
                 /* ================================================================
-                   2. SCROLLSPY & ANIMATION D'APPARITION (SPA Feel)
+                   2. SCROLLSPY & ANIMATION D'APPARITION
                    ================================================================ */
                 function initScrollspyAndAnimations() {
                     var links = Array.prototype.slice.call(
@@ -2496,7 +2730,6 @@ body.guidedstep-active {
                     );
                     var targets = [];
 
-                    // Récupérer les cibles uniques
                     var seen = new Set();
                     links.forEach(function (link) {
                         var id = link.getAttribute("data-target");
@@ -2510,7 +2743,7 @@ body.guidedstep-active {
                     });
 
                     function update() {
-                        var y = window.scrollY + 100; // Offset pour le header sticky
+                        var y = window.scrollY + 100;
                         var current = null;
                         var currentOffset = -1;
 
@@ -2533,7 +2766,6 @@ body.guidedstep-active {
                         });
                     }
 
-                    // Intersection Observer pour l'animation d'apparition des sections
                     var observer = new IntersectionObserver(
                         function (entries) {
                             entries.forEach(function (entry) {
@@ -2551,7 +2783,7 @@ body.guidedstep-active {
 
                     window.addEventListener("scroll", update, { passive: true });
                     window.addEventListener("resize", update, { passive: true });
-                    update(); // Appel initial
+                    update();
                 }
                 initScrollspyAndAnimations();
 
@@ -2589,43 +2821,46 @@ body.guidedstep-active {
                 /* ================================================================
                    4. COPIER DANS LE PRESSE-PAPIERS
                    ================================================================ */
+                function copyText(text) {
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text).catch(function() {});
+                    } else {
+                        var ta = document.createElement("textarea");
+                        ta.value = text;
+                        ta.style.position = "fixed";
+                        ta.style.opacity = "0";
+                        document.body.appendChild(ta);
+                        ta.select();
+                        try {
+                            document.execCommand("copy");
+                        } catch (err) {}
+                        document.body.removeChild(ta);
+                    }
+                }
+
+                function markCopied(btn, originalHTML) {
+                    btn.classList.add("copied");
+                    btn.innerHTML =
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Copié !';
+                    setTimeout(function () {
+                        btn.classList.remove("copied");
+                        btn.innerHTML = originalHTML;
+                    }, 1500);
+                }
+
                 document.querySelectorAll(".copy-btn").forEach(function (btn) {
                     btn.addEventListener("click", function () {
                         var block = btn.closest(".code-block");
                         if (!block) return;
                         var code = block.querySelector("code").textContent;
                         var originalHTML = btn.innerHTML;
-
-                        function done() {
-                            btn.classList.add("copied");
-                            btn.innerHTML =
-                                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Copié !';
-                            setTimeout(function () {
-                                btn.classList.remove("copied");
-                                btn.innerHTML = originalHTML;
-                            }, 1500);
-                        }
-
-                        if (navigator.clipboard && navigator.clipboard.writeText) {
-                            navigator.clipboard.writeText(code).then(done, done);
-                        } else {
-                            var ta = document.createElement("textarea");
-                            ta.value = code;
-                            ta.style.position = "fixed";
-                            ta.style.opacity = "0";
-                            document.body.appendChild(ta);
-                            ta.select();
-                            try {
-                                document.execCommand("copy");
-                            } catch (err) {}
-                            document.body.removeChild(ta);
-                            done();
-                        }
+                        copyText(code);
+                        markCopied(btn, originalHTML);
                     });
                 });
 
                 /* ================================================================
-                   5. COLORATION SYNTAXIQUE LÉGÈRE
+                   5. COLORATION SYNTAXIQUE
                    ================================================================ */
                 var RULES = [
                     { cls: "c", re: /&lt;!--[\s\S]*?--&gt;/ },
@@ -2734,7 +2969,7 @@ body.guidedstep-active {
                 });
 
                 /* ================================================================
-                   6. URLs FICHIERS (host récupéré dynamiquement) + copie
+                   6. URLs FICHIERS + COPIE
                    ================================================================ */
                 var host = window.location.host || "localhost";
                 var FILES = {
@@ -2751,7 +2986,8 @@ body.guidedstep-active {
                     btn.addEventListener("click", function () {
                         var type = btn.getAttribute("data-copy-btn");
                         var original = btn.innerHTML;
-                        copyText((FILES[type] || "") .replace(/^/, "//"));
+                        var text = FILES[type] || "";
+                        copyText(text);
                         markCopied(btn, original);
                     });
                 });
@@ -2759,13 +2995,27 @@ body.guidedstep-active {
                 var copyAllBtn = document.querySelector("[data-copy-all]");
                 if (copyAllBtn) {
                     copyAllBtn.addEventListener("click", function () {
-                        var text =
-                            '//' + FILES.css + "\n" + "//" + FILES.js;
+                        var text = FILES.css + "\n" + FILES.js;
                         copyText(text);
                         var original = copyAllBtn.innerHTML;
                         markCopied(copyAllBtn, original);
                     });
                 }
+
+                document
+                    .querySelectorAll("[data-ai-prompt]")
+                    .forEach(function (btn) {
+                        btn.addEventListener("click", function () {
+                            var targetId = btn.getAttribute("data-ai-target");
+                            var target = document.getElementById(targetId);
+                            if (!target) return;
+                            var codeEl = target.querySelector("pre.code");
+                            var text = codeEl ? codeEl.textContent : target.textContent;
+                            copyText(text);
+                            var original = btn.innerHTML;
+                            markCopied(btn, original);
+                        });
+                    });
 
                 var localCode = document.getElementById("local-cdn-code");
                 if (localCode) {
@@ -2774,35 +3024,6 @@ body.guidedstep-active {
                     localCode.innerHTML = highlight(raw);
                     if (localCode.closest(".code-block")) {
                         localCode.closest(".code-block").setAttribute("data-raw", raw);
-                    }
-                }
-
-                function markCopied(btn, originalHTML) {
-                    btn.classList.add("copied");
-                    btn.innerHTML =
-                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Copié !';
-                    setTimeout(function () {
-                        btn.classList.remove("copied");
-                        btn.innerHTML = originalHTML;
-                    }, 1500);
-                }
-
-                function copyText(text) {
-                    var done = function () {};
-                    if (navigator.clipboard && navigator.clipboard.writeText) {
-                        navigator.clipboard.writeText(text).then(done, done);
-                    } else {
-                        var ta = document.createElement("textarea");
-                        ta.value = text;
-                        ta.style.position = "fixed";
-                        ta.style.opacity = "0";
-                        document.body.appendChild(ta);
-                        ta.select();
-                        try {
-                            document.execCommand("copy");
-                        } catch (err) {}
-                        document.body.removeChild(ta);
-                        done();
                     }
                 }
             })();
