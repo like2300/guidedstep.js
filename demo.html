@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Démo GuidedStep JS</title>
+        <link rel="stylesheet" href="guidedstep.css" />
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    sans-serif;
+                line-height: 1.6;
+                color: #333;
+                background: #f8f9fa;
+            }
+            header {
+                background: #000;
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+            }
+            .container {
+                max-width: 900px;
+                margin: 40px auto;
+                padding: 0 20px;
+            }
+            .card {
+                background: #fff;
+                border: 1px solid #e5e5e5;
+                border-radius: 0;
+                padding: 30px;
+                margin-bottom: 30px;
+            }
+            h1 {
+                font-size: 2.5em;
+                margin-bottom: 10px;
+            }
+            h2 {
+                font-size: 1.8em;
+                margin-bottom: 15px;
+                font-family: "Didot", serif;
+                font-style: italic;
+            }
+            .btn {
+                display: inline-block;
+                padding: 12px 24px;
+                background: #000;
+                color: #fff;
+                text-decoration: none;
+                border: 1px solid #000;
+                cursor: pointer;
+                font-size: 0.9em;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+            }
+            .btn:hover {
+                background: #fff;
+                color: #000;
+            }
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+                margin-top: 20px;
+            }
+            .feature {
+                background: #fff;
+                padding: 20px;
+                border: 1px solid #e5e5e5;
+            }
+            .feature h3 {
+                margin-bottom: 10px;
+                font-family: "Didot", serif;
+                font-style: italic;
+            }
+            nav {
+                background: #fff;
+                border-bottom: 1px solid #e5e5e5;
+                padding: 15px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .logo {
+                font-weight: bold;
+                font-size: 1.5em;
+                font-family: "Didot", serif;
+            }
+            .nav-links {
+                display: flex;
+                gap: 20px;
+            }
+            .nav-links a {
+                color: #333;
+                text-decoration: none;
+                font-size: 0.9em;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+            .nav-links a:hover {
+                text-decoration: underline;
+            }
+            footer {
+                text-align: center;
+                padding: 40px;
+                background: #fff;
+                border-top: 1px solid #e5e5e5;
+                margin-top: 60px;
+            }
+        </style>
+    </head>
+    <body gs-player="true">
+        <nav
+            gs-step="1"
+            gs-title="Navigation"
+            gs-content="Voici la barre de navigation principale. Elle reste fixe en haut de page."
+        >
+            <div
+                gs-step="8"
+                gs-title="Logo"
+                gs-content="logo de la marque"
+                class="logo"
+            >
+                BRAND
+            </div>
+            <div class="nav-links">
+                <a href="#">Accueil</a>
+                <a href="#">Produits</a>
+                <a href="#">À propos</a>
+            </div>
+        </nav>
+
+        <header
+            gs-step="2"
+            gs-title="En-tête"
+            gs-content="Cette section présente votre titre principal et votre appel à l'action."
+        >
+            <h1>Bienvenue sur GuidedStep</h1>
+            <p>La bibliothèque de tutoriels élégante et minimaliste</p>
+            <br />
+            <button
+                class="btn"
+                gs-step="3"
+                gs-title="Bouton d'action"
+                gs-content="Cliquez ici pour démarrer une action importante."
+            >
+                Commencer
+            </button>
+        </header>
+
+        <div class="container">
+            <div
+                class="card"
+                gs-step="4"
+                gs-title="Carte de fonctionnalité"
+                gs-content="Chaque carte peut contenir du contenu riche et être ciblée individuellement dans le tutoriel."
+                gs-transition="right"
+            >
+                <h2>Fonctionnalités</h2>
+                <p>
+                    GuidedStep JS est conçu pour être léger, rapide et facile à
+                    intégrer. Aucune dépendance externe requise.
+                </p>
+                <div class="grid">
+                    <div
+                        class="feature"
+                        gs-step="5"
+                        gs-title="Grille responsive"
+                        gs-content="Les éléments peuvent être organisés en grille et restent parfaitement positionnés."
+                    >
+                        <h3>Responsive</h3>
+                        <p>S'adapte à tous les écrans</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Rapide</h3>
+                        <p>Chargement instantané</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Accessible</h3>
+                        <p>Conforme WCAG 2.1</p>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="card"
+                gs-step="6"
+                gs-title="Section de contenu"
+                gs-position="top"
+                gs-content="Vous pouvez guider l'utilisateur à travers n'importe quel élément de votre interface."
+            >
+                <h2>Comment ça marche ?</h2>
+                <p>
+                    1. Ajoutez les attributs <code>gs-step</code> à vos éléments
+                    HTML
+                </p>
+                <p>2. Initialisez GuidedStep avec vos options</p>
+                <p>
+                    3. Lancez le tutoriel avec <code>GuidedStep.start()</code>
+                </p>
+                <br />
+                <button class="btn" onclick="GuidedStep.restart()">
+                    Revoir le tutoriel
+                </button>
+            </div>
+        </div>
+
+        <footer
+            gs-step="7"
+            gs-title="Pied de page"
+            gs-content="Dernière étape du tutoriel. Vous pouvez personnaliser chaque étape avec vos propres contenus."
+        >
+            <p>&copy; 2026 GuidedStep JS. Tous droits réservés.</p>
+        </footer>
+
+        <script src="guidedstep.js"></script>
+        <script>
+            GuidedStep.init({
+                persist: true,
+                storageKey: "guidedstep_demo",
+                overlayMode: "blur",
+                overlayBlur: 8,
+                theme: {
+                    primaryColor: "#000000",
+                    borderRadius: "0px",
+                    overlayColor: "rgba(0, 0, 0, 0.65)",
+                    overlayTint: "rgba(0, 0, 0, 0.3)",
+                },
+                onStart: (step, steps) =>
+                    console.log("Tutoriel démarré à l'étape", step),
+                onComplete: (steps) => {
+                    console.log("Tutoriel terminé !");
+                    alert(
+                        "Félicitations ! Vous avez terminé le tutoriel GuidedStep.",
+                    );
+                },
+                onSkip: (step) =>
+                    console.log("Tutoriel abandonné à l'étape", step),
+                onElementMissing: (step) => {
+                    console.warn("Élément manquant:", step.selector);
+                    return true;
+                },
+            });
+
+            setTimeout(() => GuidedStep.start(0), 1000);
+        </script>
+    </body>
+</html>

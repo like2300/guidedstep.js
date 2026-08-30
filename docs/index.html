@@ -1,0 +1,2811 @@
+<!doctype html>
+<html lang="fr" id="top">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Documentation · GuidedStep JS</title>
+        <link rel="icon" type="image/png" href="logo.png" />
+        <meta
+            name="description"
+            content="Documentation officielle de GuidedStep : bibliothèque JavaScript zéro dépendance pour créer des tutoriels et parcours d'onboarding interactifs."
+        />
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+
+        <style>
+            /* ================================================================
+               1. TOKENS DE DESIGN & RESET
+               ================================================================ */
+            :root {
+                --bg: #fafaf9;
+                --surface: #ffffff;
+                --ink: #141414;
+                --ink-soft: #57534e;
+                --muted: #a8a29e;
+                --line: #e7e5e4;
+                --line-soft: #f5f5f4;
+                --accent: #141414;
+                --accent-soft: #f5f5f4;
+                --ok: #10b981;
+                --code-bg: #1e1e1e;
+                --code-ink: #e9e9e9;
+                --radius: 12px;
+                --shadow-sm: 0 1px 2px rgba(20, 20, 20, 0.04);
+                --shadow-md: 0 12px 32px rgba(20, 20, 20, 0.08);
+                --sidebar-w: 260px;
+                --header-h: 64px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                font-family:
+                    "Inter",
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                color: var(--ink);
+                background: var(--bg);
+                line-height: 1.65;
+                -webkit-font-smoothing: antialiased;
+            }
+            a {
+                color: var(--accent);
+                text-decoration: none;
+                transition: color 0.15s;
+            }
+            a:hover {
+                color: var(--ink-soft);
+            }
+            ::selection {
+                background: var(--accent);
+                color: #fff;
+            }
+            .container {
+                width: min(1140px, 92%);
+                margin-inline: auto;
+            }
+
+            /* ================================================================
+               2. COMPOSANTS UI
+               ================================================================ */
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 10px 18px;
+                border: 0;
+                border-radius: 8px;
+                font:
+                    600 14px "Inter",
+                    sans-serif;
+                cursor: pointer;
+                transition:
+                    transform 0.12s ease,
+                    box-shadow 0.15s ease,
+                    background 0.15s ease;
+            }
+            .btn svg {
+                width: 16px;
+                height: 16px;
+            }
+            .btn-primary {
+                background: var(--ink);
+                color: #fff;
+                box-shadow: 0 4px 12px rgba(20, 20, 20, 0.15);
+            }
+            .btn-primary:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 8px 20px rgba(20, 20, 20, 0.2);
+                background: #000;
+            }
+            .btn-ghost {
+                background: var(--surface);
+                color: var(--ink);
+                border: 1px solid var(--line);
+            }
+            .btn-ghost:hover {
+                border-color: var(--ink);
+                transform: translateY(-1px);
+            }
+            .btn-sm {
+                padding: 7px 14px;
+                font-size: 13px;
+            }
+
+            /* ================================================================
+               3. HEADER
+               ================================================================ */
+            .header {
+                position: sticky;
+                top: 0;
+                z-index: 990;
+                height: var(--header-h);
+                background: rgba(250, 250, 249, 0.85);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-bottom: 1px solid var(--line);
+            }
+            .header-inner {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                height: 100%;
+            }
+            .brand {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 800;
+                font-size: 17px;
+                letter-spacing: -0.02em;
+                color: var(--ink);
+            }
+            .brand-mark {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+                display: grid;
+                place-items: center;
+                background: var(--ink);
+                color: #fff;
+                box-shadow: 0 4px 12px rgba(20, 20, 20, 0.2);
+            }
+            .brand-mark svg {
+                width: 18px;
+                height: 18px;
+            }
+            .version-badge {
+                font:
+                    600 11px "Inter",
+                    sans-serif;
+                color: var(--muted);
+                background: var(--line-soft);
+                border: 1px solid var(--line);
+                border-radius: 99px;
+                padding: 2px 8px;
+                letter-spacing: 0.02em;
+            }
+            .header-nav {
+                display: flex;
+                align-items: center;
+                gap: 24px;
+            }
+            .header-nav a:not(.btn) {
+                color: var(--ink-soft);
+                font-size: 14px;
+                font-weight: 500;
+            }
+            .header-nav a:not(.btn):hover {
+                color: var(--ink);
+            }
+            .burger {
+                display: none;
+                background: none;
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                padding: 7px;
+                cursor: pointer;
+                color: var(--ink);
+            }
+            @media (max-width: 900px) {
+                .header-nav > a:not(.burger):not(.btn) {
+                    display: none;
+                }
+                .burger {
+                    display: inline-flex;
+                }
+            }
+
+            /* ================================================================
+               4. HERO
+               ================================================================ */
+            .hero {
+                position: relative;
+                padding: 64px 0 48px;
+                border-bottom: 1px solid var(--line);
+                background:
+                    radial-gradient(
+                        600px 300px at 20% 0%,
+                        rgba(20, 20, 20, 0.04),
+                        transparent 60%
+                    ),
+                    radial-gradient(
+                        600px 300px at 80% 0%,
+                        rgba(20, 20, 20, 0.04),
+                        transparent 60%
+                    );
+            }
+            .hero-inner {
+                max-width: 720px;
+                margin-inline: auto;
+                text-align: center;
+            }
+            .hero-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 14px;
+                border-radius: 99px;
+                background: var(--surface);
+                border: 1px solid var(--line);
+                box-shadow: var(--shadow-sm);
+                font:
+                    600 12px "Inter",
+                    sans-serif;
+                color: var(--ink-soft);
+                margin-bottom: 20px;
+            }
+            .hero-badge .dot {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: var(--ok);
+                box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+            }
+            .hero h1 {
+                margin: 0 0 16px;
+                font-size: clamp(2rem, 5vw, 3rem);
+                font-weight: 800;
+                letter-spacing: -0.03em;
+                line-height: 1.1;
+            }
+            .hero .lead {
+                color: var(--ink-soft);
+                font-size: 1.1rem;
+                margin: 0 auto 28px;
+                max-width: 580px;
+            }
+            .hero-cta {
+                display: flex;
+                gap: 12px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .hero-stats {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+                margin-top: 40px;
+                max-width: 520px;
+                margin-inline: auto;
+            }
+            .stat {
+                background: var(--surface);
+                border: 1px solid var(--line);
+                border-radius: 10px;
+                padding: 14px 10px;
+                font-size: 12px;
+                color: var(--muted);
+                box-shadow: var(--shadow-sm);
+            }
+            .stat b {
+                display: block;
+                font-size: 18px;
+                color: var(--ink);
+                font-weight: 800;
+                letter-spacing: -0.01em;
+                margin-bottom: 2px;
+            }
+            @media (max-width: 560px) {
+                .hero-stats {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            /* ================================================================
+               5. LAYOUT : SIDEBAR + CONTENU
+               ================================================================ */
+            .layout {
+                display: grid;
+                grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+                gap: 48px;
+                padding: 40px 0 80px;
+            }
+            @media (max-width: 1024px) {
+                .layout {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            /* Sidebar */
+            .sidebar {
+                position: sticky;
+                top: calc(var(--header-h) + 20px);
+                align-self: start;
+                max-height: calc(100vh - var(--header-h) - 40px);
+                overflow-y: auto;
+                padding-right: 6px;
+            }
+            .sidebar::-webkit-scrollbar {
+                width: 4px;
+            }
+            .sidebar::-webkit-scrollbar-thumb {
+                background: var(--line);
+                border-radius: 99px;
+            }
+            .side-group-title {
+                font:
+                    700 11px "Inter",
+                    sans-serif;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--muted);
+                margin: 0 0 8px;
+                padding-left: 12px;
+            }
+            .side-list {
+                list-style: none;
+                margin: 0 0 24px;
+                padding: 0;
+                display: grid;
+                gap: 2px;
+            }
+            .side-link {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 7px 12px;
+                border-radius: 8px;
+                font-size: 13.5px;
+                font-weight: 500;
+                color: var(--ink-soft);
+                transition: all 0.15s ease;
+                border-left: 2px solid transparent;
+            }
+            .side-link svg {
+                width: 15px;
+                height: 15px;
+                color: var(--muted);
+                flex-shrink: 0;
+            }
+            .side-link:hover {
+                color: var(--ink);
+                background: var(--line-soft);
+            }
+            .side-link.active {
+                color: var(--ink);
+                background: var(--accent-soft);
+                font-weight: 600;
+                border-left-color: var(--accent);
+            }
+            .side-link.active svg {
+                color: var(--accent);
+            }
+
+            /* Drawer Mobile */
+            .drawer-backdrop {
+                position: fixed;
+                inset: 0;
+                z-index: 980;
+                background: rgba(20, 20, 20, 0.4);
+                opacity: 0;
+                visibility: hidden;
+                transition:
+                    opacity 0.2s,
+                    visibility 0.2s;
+            }
+            .drawer {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                z-index: 989;
+                width: min(300px, 85vw);
+                background: var(--surface);
+                border-right: 1px solid var(--line);
+                box-shadow: var(--shadow-md);
+                transform: translateX(-101%);
+                transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+                display: flex;
+                flex-direction: column;
+                padding: 20px;
+                overflow-y: auto;
+            }
+            .drawer.open {
+                transform: translateX(0);
+            }
+            .drawer-backdrop.open {
+                opacity: 1;
+                visibility: visible;
+            }
+            .drawer-head {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 24px;
+            }
+            .close-btn {
+                background: var(--line-soft);
+                border: 1px solid var(--line);
+                border-radius: 8px;
+                width: 32px;
+                height: 32px;
+                display: grid;
+                place-items: center;
+                cursor: pointer;
+                color: var(--ink);
+            }
+
+            /* ================================================================
+               6. CONTENU PRINCIPAL & ANIMATIONS SPA
+               ================================================================ */
+            .content {
+                min-width: 0;
+                display: grid;
+                gap: 72px;
+            }
+            .section {
+                scroll-margin-top: calc(var(--header-h) + 24px);
+                opacity: 0;
+                transform: translateY(16px);
+                transition:
+                    opacity 0.5s ease,
+                    transform 0.5s ease;
+            }
+            .section.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .section-head {
+                margin: 0 0 24px;
+            }
+            .kicker {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font:
+                    700 11px "Inter",
+                    sans-serif;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--accent);
+                margin-bottom: 8px;
+            }
+            .kicker svg {
+                width: 15px;
+                height: 15px;
+            }
+            .section-head h2 {
+                font-size: clamp(1.5rem, 3vw, 1.85rem);
+                font-weight: 800;
+                letter-spacing: -0.03em;
+                margin: 0 0 10px;
+            }
+            .section-head p {
+                color: var(--ink-soft);
+                margin: 0;
+                max-width: 600px;
+                font-size: 15.5px;
+            }
+
+            h3.sub {
+                font-size: 17px;
+                font-weight: 700;
+                letter-spacing: -0.01em;
+                margin: 32px 0 12px;
+            }
+            p {
+                margin: 0 0 16px;
+                color: var(--ink-soft);
+            }
+            code:not(pre code) {
+                font:
+                    500 0.88em "JetBrains Mono",
+                    monospace;
+                background: var(--accent-soft);
+                color: var(--ink);
+                padding: 2px 6px;
+                border-radius: 6px;
+                white-space: nowrap;
+                font-size: 13px;
+            }
+
+            /* Features Grid */
+            .feature-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 16px;
+                margin-top: 24px;
+            }
+            .feature {
+                background: var(--surface);
+                border: 1px solid var(--line);
+                border-radius: var(--radius);
+                padding: 20px;
+                box-shadow: var(--shadow-sm);
+                transition:
+                    transform 0.15s,
+                    box-shadow 0.15s;
+            }
+            .feature:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-md);
+            }
+            .feature-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 10px;
+                display: grid;
+                place-items: center;
+                background: var(--accent-soft);
+                color: var(--accent);
+                margin-bottom: 14px;
+            }
+            .feature-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+            .feature h3 {
+                font-size: 15px;
+                font-weight: 700;
+                margin: 0 0 6px;
+            }
+            .feature p {
+                font-size: 13.5px;
+                color: var(--muted);
+                margin: 0;
+            }
+
+            /* Table */
+            .table-wrap {
+                overflow-x: auto;
+                border: 1px solid var(--line);
+                border-radius: 10px;
+                box-shadow: var(--shadow-sm);
+                margin: 16px 0;
+            }
+            table.attrs {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 13.5px;
+                min-width: 540px;
+            }
+            table.attrs th,
+            table.attrs td {
+                text-align: left;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--line);
+                vertical-align: top;
+            }
+            table.attrs thead th {
+                background: var(--line-soft);
+                font:
+                    700 11px "Inter",
+                    sans-serif;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                color: var(--muted);
+            }
+            table.attrs tbody tr:last-child td {
+                border-bottom: 0;
+            }
+            table.attrs td.attr {
+                font:
+                    600 12.5px "JetBrains Mono",
+                    monospace;
+                color: var(--ink);
+                white-space: nowrap;
+            }
+            table.attrs td .eg {
+                font:
+                    400 11.5px "JetBrains Mono",
+                    monospace;
+                color: var(--muted);
+                background: var(--line-soft);
+                padding: 2px 8px;
+                border-radius: 6px;
+            }
+
+            /* Code Blocks */
+            .code-block {
+                border-radius: 10px;
+                overflow: hidden;
+                background: var(--code-bg);
+                box-shadow: var(--shadow-md);
+                margin: 16px 0 24px;
+                border: 1px solid rgba(255, 255, 255, 0.06);
+            }
+            .code-head {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 14px;
+                background: rgba(255, 255, 255, 0.03);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            }
+            .code-dots {
+                display: flex;
+                gap: 6px;
+            }
+            .code-dots i {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                display: block;
+            }
+            .code-dots i:nth-child(1) {
+                background: #ff5f57;
+            }
+            .code-dots i:nth-child(2) {
+                background: #febc2e;
+            }
+            .code-dots i:nth-child(3) {
+                background: #28c840;
+            }
+            .code-file {
+                font:
+                    500 11.5px "Inter",
+                    sans-serif;
+                color: #8b949e;
+            }
+            .code-lang {
+                margin-left: auto;
+                font:
+                    600 10px "Inter",
+                    sans-serif;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: #6e7681;
+            }
+            .copy-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: rgba(255, 255, 255, 0.06);
+                color: #c9d1d9;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 6px;
+                padding: 4px 10px;
+                font:
+                    600 11.5px "Inter",
+                    sans-serif;
+                cursor: pointer;
+                transition: all 0.15s;
+            }
+            .copy-btn:hover {
+                background: rgba(255, 255, 255, 0.12);
+                color: #fff;
+            }
+            .copy-btn svg {
+                width: 12px;
+                height: 12px;
+            }
+            .copy-btn.copied {
+                background: rgba(16, 185, 129, 0.15);
+                color: #34d399;
+                border-color: rgba(16, 185, 129, 0.3);
+            }
+            pre.code {
+                margin: 0;
+                padding: 16px 18px;
+                overflow-x: auto;
+            }
+            pre.code code {
+                font:
+                    500 13px/1.65 "JetBrains Mono",
+                    monospace;
+                color: var(--code-ink);
+                white-space: pre;
+            }
+
+            /* Syntax Highlighting Tokens */
+            .tok-c {
+                color: #8b949e;
+                font-style: italic;
+            }
+            .tok-s {
+                color: #a5d6ff;
+            }
+            .tok-k {
+                color: #ff7b72;
+            }
+            .tok-f {
+                color: #d2a8ff;
+            }
+            .tok-t {
+                color: #7ee787;
+            }
+            .tok-a {
+                color: #79c0ff;
+            }
+
+            /* API List */
+            .api-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: grid;
+                gap: 10px;
+            }
+            .api-list li {
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                background: var(--surface);
+                border: 1px solid var(--line);
+                border-radius: 10px;
+                padding: 14px 16px;
+                font-size: 14px;
+                color: var(--ink-soft);
+                box-shadow: var(--shadow-sm);
+            }
+            .api-list li svg {
+                width: 18px;
+                height: 18px;
+                color: var(--accent);
+                flex-shrink: 0;
+                margin-top: 2px;
+            }
+            .api-list li b {
+                font-family: "JetBrains Mono", monospace;
+                font-size: 12.5px;
+                color: var(--ink);
+                font-weight: 600;
+            }
+
+            /* Frameworks */
+            .fw-block {
+                margin-bottom: 32px;
+            }
+            .fw-title {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin: 0 0 12px;
+            }
+            .fw-logo {
+                width: 28px;
+                height: 28px;
+                display: grid;
+                place-items: center;
+            }
+            .fw-logo svg {
+                width: 24px;
+                height: 24px;
+            }
+            .fw-title h3 {
+                font-size: 16px;
+                font-weight: 700;
+                margin: 0;
+            }
+            .fw-react {
+                color: #61dafb;
+            }
+            .fw-vue {
+                color: #42b883;
+            }
+            .fw-angular {
+                color: #dd0031;
+            }
+
+            /* Callout */
+            .callout {
+                display: flex;
+                gap: 14px;
+                background: var(--accent-soft);
+                border: 1px solid var(--line);
+                border-radius: 10px;
+                padding: 16px 18px;
+                margin: 8px 0 20px;
+            }
+            .callout-icon {
+                color: var(--accent);
+                flex-shrink: 0;
+                margin-top: 2px;
+            }
+            .callout-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+            .callout h4 {
+                margin: 0 0 6px;
+                font-size: 14px;
+                font-weight: 700;
+            }
+            .callout ul {
+                margin: 0;
+                padding-left: 18px;
+            }
+            .callout li {
+                font-size: 13.5px;
+                color: var(--ink-soft);
+                margin-bottom: 6px;
+            }
+            .callout kbd {
+                font:
+                    600 11px "JetBrains Mono",
+                    monospace;
+                background: var(--surface);
+                border: 1px solid var(--line);
+                border-radius: 5px;
+                padding: 1px 6px;
+                color: var(--ink);
+            }
+
+            /* ================================================================
+               "BIENTÔT DISPONIBLE" — Floutage + Toggle réactif
+               ================================================================ */
+            .soon {
+                position: relative;
+            }
+            .soon .soon-content {
+                transition: filter 0.4s ease;
+                filter: blur(6px);
+                pointer-events: none;
+                user-select: none;
+            }
+            .soon:not(.blurred) .soon-content {
+                filter: blur(0);
+                pointer-events: auto;
+                user-select: auto;
+            }
+            .soon-badge {
+                position: absolute;
+                top: 14px;
+                right: 14px;
+                z-index: 5;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 12px;
+                border-radius: 99px;
+                background: var(--ink);
+                color: #fff;
+                font:
+                    600 11px "Inter",
+                    sans-serif;
+                letter-spacing: 0.04em;
+                box-shadow: 0 6px 18px rgba(20, 20, 20, 0.25);
+            }
+            .soon-badge .label-open {
+                display: none;
+            }
+            .soon:not(.blurred) .soon-badge .label-close {
+                display: none;
+            }
+            .soon:not(.blurred) .soon-badge .label-open {
+                display: inline;
+            }
+            .soon:not(.blurred) .soon-badge {
+                background: var(--ok);
+            }
+            .soon-toggle {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--ink-soft);
+                cursor: pointer;
+                margin: 4px 0 16px;
+                user-select: none;
+            }
+            .soon-toggle input {
+                appearance: none;
+                width: 40px;
+                height: 22px;
+                border-radius: 99px;
+                background: var(--line);
+                position: relative;
+                cursor: pointer;
+                transition: background 0.2s ease;
+                flex-shrink: 0;
+            }
+            .soon-toggle input::after {
+                content: "";
+                position: absolute;
+                top: 3px;
+                left: 3px;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: #fff;
+                box-shadow: 0 1px 3px rgba(20, 20, 20, 0.3);
+                transition: transform 0.2s ease;
+            }
+            .soon-toggle input:checked {
+                background: var(--accent);
+            }
+            .soon-toggle input:checked::after {
+                transform: translateX(18px);
+            }
+
+            /* ================================================================
+               FICHIERS SERVEUR (copie d'URL)
+               ================================================================ */
+            .server-files {
+                display: grid;
+                gap: 10px;
+                margin: 16px 0 24px;
+            }
+            .file-copy {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                background: var(--surface);
+                border: 1px solid var(--line);
+                border-radius: 10px;
+                padding: 10px 14px;
+                box-shadow: var(--shadow-sm);
+            }
+            .file-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 7px;
+                font:
+                    700 12px "Inter",
+                    sans-serif;
+                color: var(--ink);
+                white-space: nowrap;
+            }
+            .file-label svg {
+                width: 15px;
+                height: 15px;
+                color: var(--accent);
+            }
+            .file-url {
+                flex: 1;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font:
+                    500 12px "JetBrains Mono",
+                    monospace;
+                color: var(--ink-soft);
+                background: var(--line-soft);
+                border-radius: 6px;
+                padding: 5px 10px;
+            }
+            .file-copy .copy-btn {
+                flex-shrink: 0;
+            }
+
+            /* Footer */
+            .footer {
+                border-top: 1px solid var(--line);
+                background: var(--surface);
+                padding: 32px 0;
+                margin-top: 40px;
+            }
+            .footer-inner {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 18px;
+                flex-wrap: wrap;
+            }
+            .footer-brand {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                font-weight: 800;
+                font-size: 14px;
+            }
+            .footer-links {
+                display: flex;
+                gap: 20px;
+                font-size: 13.5px;
+                color: var(--muted);
+            }
+            .footer-links a {
+                color: var(--muted);
+            }
+            .footer-links a:hover {
+                color: var(--ink);
+            }
+            .footer p {
+                margin: 0;
+                color: var(--muted);
+                font-size: 13px;
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                html {
+                    scroll-behavior: auto;
+                }
+                .section {
+                    opacity: 1;
+                    transform: none;
+                    transition: none;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- HEADER -->
+        <header class="header">
+            <div class="container header-inner">
+                <a
+                    class="brand"
+                    href="#top"
+                    aria-label="GuidedStep — retour en haut"
+                >
+                    <span class="brand-mark">
+                        <img
+                            src="logo.png"
+                            alt="Logo GuidedStep"
+                            style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px"
+                        />
+                    </span>
+                    GuidedStep <span class="version-badge">v2.4.0</span>
+                </a>
+
+                <div class="header-nav">
+                    <a href="#introduction">Docs</a>
+                    <a href="#api-js">API</a>
+                    <a href="#frameworks">Frameworks</a>
+                    <a
+                        class="github-link"
+                        href="https://github.com"
+                        target="_blank"
+                        rel="noopener"
+                        style="
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                            color: var(--ink-soft);
+                            font-size: 14px;
+                            font-weight: 500;
+                        "
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            aria-hidden="true"
+                            style="width: 18px; height: 18px"
+                        >
+                            <path
+                                d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.27.83-.58v-2.24c-3.34.73-4.03-1.4-4.03-1.4-.55-1.4-1.34-1.76-1.34-1.76-1.08-.74.08-.73.08-.73 1.2.09 1.84 1.23 1.84 1.23 1.08 1.84 2.8 1.3 3.5 1 .1-.77.42-1.31.75-1.62-2.56-.28-5.3-1.3-5.3-5.7 0-1.27.45-2.3 1.2-3.1-.13-.3-.52-1.5.1-3.1 0 0 .95-.3 3.12 1.17A10.7 10.7 0 0 1 12 5.6c.97 0 1.94.13 2.85.39 2.17-1.46 3.12-1.16 3.12-1.16.63 1.6.24 2.8.12 3.1.74.8 1.2 1.82 1.2 3.09 0 4.41-2.75 5.41-5.36 5.7.42.36.8 1.07.8 2.16v3.1c0 .3.22.71.84.58A12 12 0 0 0 12 .3z"
+                            />
+                        </svg>
+                        GitHub
+                    </a>
+                    <a class="btn btn-primary btn-sm" href="#installation"
+                        >Commencer</a
+                    >
+                    <button
+                        class="burger"
+                        type="button"
+                        aria-label="Ouvrir la navigation"
+                        aria-expanded="false"
+                        aria-controls="drawer"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            aria-hidden="true"
+                        >
+                            <path d="M4 7h16M4 12h16M4 17h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- DRAWER MOBILE -->
+        <div class="drawer-backdrop" id="drawerBackdrop"></div>
+        <aside class="drawer" id="drawer" aria-label="Navigation mobile">
+            <div class="drawer-head">
+                <a class="brand" href="#top">
+                    <span class="brand-mark"
+                        ><img
+                            src="logo.png"
+                            alt="Logo GuidedStep"
+                            style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px"
+                    /></span>
+                    GuidedStep
+                </a>
+                <button
+                    class="close-btn"
+                    type="button"
+                    aria-label="Fermer la navigation"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                        stroke-linecap="round"
+                        aria-hidden="true"
+                    >
+                        <path d="M6 6l12 12M18 6L6 18" />
+                    </svg>
+                </button>
+            </div>
+            <nav class="drawer-nav" aria-label="Sections"></nav>
+        </aside>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="container hero-inner">
+                <span class="hero-badge"
+                    ><span class="dot" aria-hidden="true"></span> Zéro
+                    dépendance · Prêt pour la production</span
+                >
+                <h1>
+                    Documentation officielle de
+                    <span
+                        style="
+                            background: linear-gradient(
+                                135deg,
+                                #57534e,
+                                #000 55%
+                            );
+                            -webkit-background-clip: text;
+                            background-clip: text;
+                            color: transparent;
+                        "
+                        >GuidedStep</span
+                    >
+                </h1>
+                <p class="lead">
+                    La bibliothèque JavaScript vanilla pour créer des parcours
+                    d'onboarding, des tutoriels interactifs et des guides
+                    utilisateur élégants — sur n'importe quelle application web.
+                </p>
+                <div class="hero-cta">
+                    <a class="btn btn-primary" href="#installation">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                        Commencer l'intégration
+                    </a>
+                    <a class="btn btn-ghost" href="#api-js">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            aria-hidden="true"
+                        >
+                            <path d="M10 6L4 12l6 6M14 6l6 6-6 6" />
+                        </svg>
+                        Explorer l'API
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat"><b>&lt; 23 KB</b> minifié, gzippé</div>
+                    <div class="stat"><b>0</b> dépendance</div>
+                    <div class="stat"><b>100 %</b> accessible & responsive</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LAYOUT : SIDEBAR + CONTENU -->
+        <div class="container layout">
+            <aside class="sidebar" aria-label="Sommaire"></aside>
+
+            <main class="content">
+                <!-- INTRODUCTION -->
+                <section id="introduction" class="section">
+                    <div class="section-head">
+                        <span class="kicker"
+                            ><svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <circle cx="12" cy="12" r="9" />
+                                <path
+                                    d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"
+                                />
+                            </svg>
+                            Pour commencer</span
+                        >
+                        <h2>Introduction</h2>
+                        <p>
+                            Comprendre l'approche déclarative de GuidedStep en
+                            quelques minutes.
+                        </p>
+                    </div>
+                    <p>
+                        <strong>GuidedStep</strong> est une bibliothèque
+                        JavaScript vanilla qui ajoute des parcours guidés
+                        interactifs à vos applications web. Le principe est
+                        simple : vous balisez votre HTML existant avec des
+                        attributs <code>gs-*</code>, puis vous laissez la
+                        bibliothèque générer la carte contextuelle, l'overlay et
+                        la navigation.
+                    </p>
+
+                    <div class="feature-grid">
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                                    />
+                                    <path d="M12 22V10" />
+                                    <path d="M3.3 7l8.7 5 8.7-5" />
+                                </svg>
+                            </div>
+                            <h3>Zéro dépendance</h3>
+                            <p>
+                                Aucun framework requis. Fonctionne partout,
+                                moins de 10 kb minifié.
+                            </p>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <rect
+                                        x="2"
+                                        y="5"
+                                        width="16"
+                                        height="11"
+                                        rx="2"
+                                    />
+                                    <path d="M6 20h8" />
+                                    <rect
+                                        x="17"
+                                        y="8"
+                                        width="5"
+                                        height="11"
+                                        rx="2"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>100 % responsive</h3>
+                            <p>
+                                <strong>ResizeObserver</strong> recalcule
+                                automatiquement les positions à chaque
+                                redimensionnement.
+                            </p>
+                        </div>
+                        <div class="feature">
+                            <div class="feature-icon">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <circle cx="12" cy="12" r="9" />
+                                    <circle cx="12" cy="9.5" r="1.6" />
+                                    <path
+                                        d="M8.5 14.5c.9 1.2 2.1 1.9 3.5 1.9s2.6-.7 3.5-1.9"
+                                    />
+                                </svg>
+                            </div>
+                            <h3>Accessible (a11y)</h3>
+                            <p>
+                                Focus piégé, attributs ARIA et navigation
+                                clavier (Échap, Flèches).
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- INSTALLATION -->
+                <section id="installation" class="section">
+                    <div class="section-head">
+                        <span class="kicker"
+                            ><svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    x="3"
+                                    y="3"
+                                    width="18"
+                                    height="18"
+                                    rx="2"
+                                />
+                                <path d="M3 9h18M9 21V9" />
+                            </svg>
+                            Démarrage</span
+                        >
+                        <h2>Installation</h2>
+                        <p>
+                            Intégrez GuidedStep via votre serveur (fichiers
+                            locaux) ou directement en CDN.
+                        </p>
+                    </div>
+
+                    <div class="callout">
+                        <span class="callout-icon"
+                            ><svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M16 3h5v5" />
+                                <path d="M8 21H3v-5" />
+                                <path d="M21 3l-7 7" />
+                                <path d="M3 21l7-7" />
+                            </svg></span
+                        >
+                        <div>
+                            <h4>Hébergement sur votre serveur</h4>
+                            <p>
+                                Téléchargez les fichiers de la bibliothèque et
+                                placez-les dans le dossier de votre site. Copiez
+                                les URLs ci-dessous (générées dynamiquement
+                                depuis l'hôte courant).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="server-files">
+                        <div class="file-copy">
+                            <span class="file-label"
+                                ><svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                                    <rect x="8" y="2" width="8" height="4" rx="1" />
+                                </svg>
+                                CSS</span
+                            >
+                            <code class="file-url" data-file-url="css"
+                                >…</code
+                            >
+                            <button
+                                class="copy-btn"
+                                type="button"
+                                data-copy-btn="css"
+                            >
+                                Copier
+                            </button>
+                        </div>
+                        <div class="file-copy">
+                            <span class="file-label"
+                                ><svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                                    <rect x="8" y="2" width="8" height="4" rx="1" />
+                                </svg>
+                                JS</span
+                            >
+                            <code class="file-url" data-file-url="js"
+                                >…</code
+                            >
+                            <button
+                                class="copy-btn"
+                                type="button"
+                                data-copy-btn="js"
+                            >
+                                Copier
+                            </button>
+                        </div>
+                        <button class="btn btn-ghost btn-sm" type="button" data-copy-all>
+                            Copier les deux URLs
+                        </button>
+                    </div>
+
+                    <div
+                        class="code-block"
+                        data-lang="html"
+                        data-file="index.html"
+                    >
+                        <div class="code-head">
+                            <span class="code-dots"><i></i><i></i><i></i></span>
+                            <span class="code-file">index.html</span>
+                            <span class="code-lang">HTML (CDN)</span>
+                            <button class="copy-btn" type="button">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <rect
+                                        x="9"
+                                        y="9"
+                                        width="13"
+                                        height="13"
+                                        rx="2"
+                                    />
+                                    <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                                </svg>
+                                Copier
+                            </button>
+                        </div>
+                        <pre
+                            class="code"
+                        ><code>&lt;!-- Dans le &lt;head&gt; (CSS) --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/guidedstep@latest/dist/guidedstep.min.css"&gt;
+
+&lt;!-- Avant la fermeture de &lt;/body&gt; (JS) --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/guidedstep@latest/dist/guidedstep.min.js"&gt;&lt;/script&gt;</code></pre>
+                    </div>
+
+                    <h3 class="sub">Mode local (depuis votre hôte)</h3>
+                    <p>
+                        Hébergez <code>guidedstep.css</code> et
+                        <code>guidedstep.js</code> sur votre serveur, puis
+                        référencez-les avec l'hôte courant — récupéré
+                        automatiquement en JavaScript.
+                    </p>
+                    <div
+                        class="code-block"
+                        data-lang="html"
+                        data-file="index.html"
+                    >
+                        <div class="code-head">
+                            <span class="code-dots"><i></i><i></i><i></i></span>
+                            <span class="code-file">index.html</span>
+                            <span class="code-lang">HTML (hôte courant)</span>
+                            <button class="copy-btn" type="button">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <rect
+                                        x="9"
+                                        y="9"
+                                        width="13"
+                                        height="13"
+                                        rx="2"
+                                    />
+                                    <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                                </svg>
+                                Copier
+                            </button>
+                        </div>
+                        <pre
+                            class="code"
+                            id="local-cdn-code"
+                        ><code>&lt;!-- Dans le &lt;head&gt; (CSS) --&gt;
+&lt;link rel="stylesheet" href="//{HOST}/guidedstep.css"&gt;
+
+&lt;!-- Avant la fermeture de &lt;/body&gt; (JS) --&gt;
+&lt;script src="//{HOST}/guidedstep.js"&gt;&lt;/script&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- UTILISATION DE BASE -->
+                <section id="utilisation-base" class="section">
+                    <div class="section-head">
+                        <span class="kicker"
+                            ><svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M4 17L12 5l8 12" />
+                                <path d="M9 12h6" />
+                            </svg>
+                            Démarrage</span
+                        >
+                        <h2>Utilisation de base</h2>
+                        <p>
+                            Deux étapes suffisent : baliser le HTML, puis
+                            initialiser en JavaScript.
+                        </p>
+                    </div>
+
+                    <h3 id="attributs-html" class="sub section">
+                        1. Attributs HTML <code>gs-*</code>
+                    </h3>
+                    <p>
+                        Ajoutez ces attributs directement sur les éléments du
+                        DOM à mettre en avant :
+                    </p>
+
+                    <div class="table-wrap">
+                        <table class="attrs">
+                            <thead>
+                                <tr>
+                                    <th>Attribut</th>
+                                    <th>Description</th>
+                                    <th>Exemple</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="attr">gs-step</td>
+                                    <td>
+                                        Ordre numérique de l'étape dans le
+                                        parcours.
+                                    </td>
+                                    <td><span class="eg">gs-step="1"</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="attr">gs-title</td>
+                                    <td>
+                                        Titre affiché en haut de la carte du
+                                        tutoriel.
+                                    </td>
+                                    <td>
+                                        <span class="eg"
+                                            >gs-title="Bienvenue"</span
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="attr">gs-content</td>
+                                    <td>
+                                        Texte descriptif de l'étape (HTML
+                                        basique autorisé).
+                                    </td>
+                                    <td>
+                                        <span class="eg"
+                                            >gs-content="Ceci est le menu"</span
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="attr">gs-position</td>
+                                    <td>
+                                        Position préférée de la carte (top,
+                                        bottom, left, right, auto).
+                                    </td>
+                                    <td>
+                                        <span class="eg"
+                                            >gs-position="bottom"</span
+                                        >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 id="bouton-flottant" class="sub section">
+                        2. Bouton flottant de relance —
+                        <code>gs-player="true"</code>
+                    </h3>
+                    <p>
+                        Pour afficher automatiquement un
+                        <strong>bouton flottant (FAB)</strong>
+                        <em>« Revoir le guide »</em>, ajoutez simplement
+                        l'attribut <code>gs-player="true"</code> sur l'élément
+                        <code>&lt;body&gt;</code> :
+                    </p>
+
+                    <div class="code-block" data-lang="html" data-file="index.html">
+                        <div class="code-head">
+                            <span class="code-dots"><i></i><i></i><i></i></span>
+                            <span class="code-file">index.html</span>
+                            <span class="code-lang">HTML</span>
+                            <button class="copy-btn" type="button">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <rect
+                                        x="9"
+                                        y="9"
+                                        width="13"
+                                        height="13"
+                                        rx="2"
+                                    />
+                                    <path
+                                        d="M5 15V5a2 2 0 0 1 2-2h10"
+                                    />
+                                </svg>
+                                Copier
+                            </button>
+                        </div>
+                        <pre class="code"><code>&lt;body gs-player="true"&gt;
+  &lt;!-- Cibles du tutoriel avec gs-step --&gt;
+  &lt;button gs-step="1" gs-title="Bienvenue"
+          gs-content="Cette page vous guide pas à pas"&gt;
+    Découvrir
+  &lt;/button&gt;
+&lt;/body&gt;</code></pre>
+                    </div>
+
+                    <div class="note">
+                        <p>
+                            <strong>Comment ça marche ?</strong> Le bouton
+                            flottant apparaît dès le chargement du script. Un
+                            clic relance le tutoriel depuis la première étape
+                            (appelle <code>GuidedStep.restart()</code>). Il est
+                            masqué automatiquement pendant que le guide est
+                            actif, puis réaffiché à la fin. L'attribut est
+                            <strong>optionnel</strong> : sans lui, aucun bouton
+                            n'est créé et le guide ne démarre que via
+                            JavaScript. Le bouton utilise la classe
+                            <code>.guidedstep-fab</code> pour la
+                            personnalisation.
+                        </p>
+                    </div>
+
+                    <h3 class="sub section">3. Initialisation JavaScript</h3>
+                    <div class="code-block" data-lang="js" data-file="app.js">
+                        <div class="code-head">
+                            <span class="code-dots"><i></i><i></i><i></i></span>
+                            <span class="code-file">app.js</span>
+                            <span class="code-lang">JavaScript</span>
+                            <button class="copy-btn" type="button">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <rect
+                                        x="9"
+                                        y="9"
+                                        width="13"
+                                        height="13"
+                                        rx="2"
+                                    />
+                                    <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                                </svg>
+                                Copier
+                            </button>
+                        </div>
+                        <pre
+                            class="code"
+                        ><code>// 1. Initialiser avec les options souhaitées
+GuidedStep.init({
+  persist: true, // Sauvegarde la progression dans le localStorage
+  overlayMode: 'blur', // 'color' = voile coloré | 'blur' = flou d'arrière-plan
+  overlayBlur: 8, // Intensité du flou en px (mode 'blur')
+  theme: {
+    primaryColor: '#000000',
+    borderRadius: '12px',
+    overlayColor: 'rgba(0, 0, 0, 0.65)', // Voile en mode 'color'
+    overlayTint: 'rgba(0, 0, 0, 0.3)', // Léger voile en mode 'blur'
+  },
+});
+
+// 2. Démarrer le tutoriel (au chargement ou au clic d'un bouton)
+document.getElementById('start-tour').addEventListener('click', () => {
+  GuidedStep.start(0); // Commence à l'index 0
+});</code></pre>
+                    </div>
+                </section>
+
+                <!-- API JS -->
+                <section id="api-js" class="section">
+                    <div class="section-head">
+                        <span class="kicker"
+                            ><svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M8 6l-5 6 5 6M16 6l5 6-5 6" />
+                            </svg>
+                            Référence</span
+                        >
+                        <h2>API JavaScript</h2>
+                        <p>
+                            Le contrôle du parcours repose sur un petit jeu de
+                            fonctions stables.
+                        </p>
+                    </div>
+
+                    <h3 id="callbacks" class="sub section">
+                        Fonctions de contrôle
+                    </h3>
+                    <ul class="api-list">
+                        <li>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M4 12h16M14 6l6 6-6 6" /></svg
+                            ><span
+                                ><b>GuidedStep.start(index)</b> — démarre le
+                                parcours à l'index spécifié.</span
+                            >
+                        </li>
+                        <li>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M4 12h16M14 6l6 6-6 6" /></svg
+                            ><span
+                                ><b>GuidedStep.next()</b> — passe à l'étape
+                                suivante.</span
+                            >
+                        </li>
+                        <li>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M20 12H4M10 18l-6-6 6-6" /></svg
+                            ><span
+                                ><b>GuidedStep.prev()</b> — revient à l'étape
+                                précédente.</span
+                            >
+                        </li>
+                        <li>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M6 6L18 18M18 6L6 18" /></svg
+                            ><span
+                                ><b>GuidedStep.skip()</b> — arrête et ferme le
+                                tutoriel immédiatement.</span
+                            >
+                        </li>
+                        <li>
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M3 12a9 9 0 1 0 9-9M3 4v5h5" /></svg
+                            ><span
+                                ><b>GuidedStep.restart()</b> — réinitialise et
+                                redémarre depuis le début.</span
+                            >
+                        </li>
+                    </ul>
+
+                    <h3 class="sub section">Callbacks de configuration</h3>
+                    <div
+                        class="code-block"
+                        data-lang="js"
+                        data-file="config.js"
+                    >
+                        <div class="code-head">
+                            <span class="code-dots"><i></i><i></i><i></i></span>
+                            <span class="code-file">config.js</span>
+                            <span class="code-lang">JavaScript</span>
+                            <button class="copy-btn" type="button">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <rect
+                                        x="9"
+                                        y="9"
+                                        width="13"
+                                        height="13"
+                                        rx="2"
+                                    />
+                                    <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                                </svg>
+                                Copier
+                            </button>
+                        </div>
+                        <pre class="code"><code>GuidedStep.init({
+  // Déclenché au tout début du tutoriel
+  onStart: (currentStep, allSteps) => {
+    console.log('Début du parcours', currentStep);
+  },
+
+  // Déclenché lorsque la dernière étape est terminée
+  onComplete: (allSteps) => {
+    console.log('Parcours terminé avec succès');
+  },
+
+  // Déclenché si l'utilisateur clique sur « Passer » ou ferme
+  onSkip: (currentStep, allSteps) => {
+    console.log('Parcours abandonné à l\'étape', currentStep);
+  },
+
+  // Déclenché si un élément gs-step est introuvable ou caché
+  // Retourner 'true' pour passer à la suivante, 'false' pour arrêter.
+  onElementMissing: (stepObj, allSteps) => {
+    console.warn('Élément manquant :', stepObj.selector);
+    return true;
+  },
+});</code></pre>
+                    </div>
+                </section>
+
+                <!-- FRAMEWORKS -->
+                <section id="frameworks" class="section">
+                    <div class="section-head">
+                        <span class="kicker"
+                            ><svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <rect
+                                    x="3"
+                                    y="3"
+                                    width="18"
+                                    height="18"
+                                    rx="4"
+                                />
+                                <path d="M8 9l4 3-4 3M13 15h4" />
+                            </svg>
+                            Intégration</span
+                        >
+                        <h2>Intégration aux frameworks</h2>
+                        <p>
+                            GuidedStep fonctionne nativement partout. Voici les
+                            modèles recommandés.
+                        </p>
+                    </div>
+
+                    <!-- React -->
+                    <div class="fw-block" id="frameworks-react">
+                        <div class="fw-title">
+                            <span class="fw-logo fw-react" aria-hidden="true">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.1"
+                                >
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="2.1"
+                                        fill="currentColor"
+                                        stroke="none"
+                                    />
+                                    <ellipse
+                                        cx="12"
+                                        cy="12"
+                                        rx="10.2"
+                                        ry="3.9"
+                                    />
+                                    <ellipse
+                                        cx="12"
+                                        cy="12"
+                                        rx="10.2"
+                                        ry="3.9"
+                                        transform="rotate(60 12 12)"
+                                    />
+                                    <ellipse
+                                        cx="12"
+                                        cy="12"
+                                        rx="10.2"
+                                        ry="3.9"
+                                        transform="rotate(120 12 12)"
+                                    />
+                                </svg>
+                            </span>
+                            <h3>React / Next.js</h3>
+                        </div>
+                        <div
+                            class="code-block"
+                            data-lang="jsx"
+                            data-file="Dashboard.jsx"
+                        >
+                            <div class="code-head">
+                                <span class="code-dots"
+                                    ><i></i><i></i><i></i
+                                ></span>
+                                <span class="code-file">Dashboard.jsx</span>
+                                <span class="code-lang">React</span>
+                                <button class="copy-btn" type="button">
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+                                        <rect
+                                            x="9"
+                                            y="9"
+                                            width="13"
+                                            height="13"
+                                            rx="2"
+                                        />
+                                        <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                                    </svg>
+                                    Copier
+                                </button>
+                            </div>
+                            <pre
+                                class="code"
+                            ><code>import { useEffect } from 'react';
+
+export default function Dashboard() {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.GuidedStep.init({
+        persist: true,
+        theme: { primaryColor: '#2563eb' },
+      });
+    }
+  }, []);
+
+  const startTour = () => window.GuidedStep.start(0);
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={startTour} className="btn-primary"&gt;
+        Voir le guide
+      &lt;/button&gt;
+
+      &lt;nav
+        gs-step="1"
+        gs-title="Navigation"
+        gs-content="Accédez à vos paramètres ici."
+        gs-position="bottom"
+      &gt;
+        &lt;!-- Contenu de la nav --&gt;
+      &lt;/nav&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Vue -->
+                    <div class="fw-block" id="frameworks-vue">
+                        <div class="fw-title">
+                            <span class="fw-logo fw-vue" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M24 2.2h-4.7L12 12.6 4.7 2.2H0l12 19.6z"
+                                    />
+                                </svg>
+                            </span>
+                            <h3>Vue 3 / Nuxt</h3>
+                        </div>
+                        <div
+                            class="code-block"
+                            data-lang="vue"
+                            data-file="App.vue"
+                        >
+                            <div class="code-head">
+                                <span class="code-dots"
+                                    ><i></i><i></i><i></i
+                                ></span>
+                                <span class="code-file">App.vue</span>
+                                <span class="code-lang">Vue</span>
+                                <button class="copy-btn" type="button">
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+                                        <rect
+                                            x="9"
+                                            y="9"
+                                            width="13"
+                                            height="13"
+                                            rx="2"
+                                        />
+                                        <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                                    </svg>
+                                    Copier
+                                </button>
+                            </div>
+                            <pre class="code"><code>&lt;script setup&gt;
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  window.GuidedStep.init({
+    persist: true,
+    onElementMissing: (step) => {
+      console.log('Élément dynamique pas encore rendu, on skip');
+      return true;
+    },
+  });
+});
+
+const startTour = () => {
+  window.GuidedStep.start(0);
+};
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;button @click="startTour"&gt;Démarrer le tutoriel&lt;/button&gt;
+
+  &lt;div
+    gs-step="1"
+    gs-title="Tableau de bord"
+    gs-content="Voici vos statistiques principales."
+  &gt;
+    &lt;!-- Contenu --&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Angular -->
+                    <div
+                        class="fw-block soon blurred"
+                        id="frameworks-angular"
+                        data-soon="angular"
+                    >
+                        <span class="soon-badge" aria-hidden="true"
+                            ><span class="label-open">Aperçu anticipé</span
+                            ><span class="label-close">Bientôt disponible</span>
+                        </span>
+                        <label class="soon-toggle" for="toggle-angular">
+                            <input
+                                type="checkbox"
+                                id="toggle-angular"
+                                data-soon-toggle="angular"
+                            />
+                            Aperçu anticipé
+                        </label>
+                        <div class="soon-content">
+                        <div class="fw-title">
+                            <span class="fw-logo fw-angular" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M11.9 2.1L2.8 5.2l1.5 13 7.6 4.1 7.6-4.1 1.5-13zm0 2.2l6.6 12.6h-2.3l-1.2-2.9H8.8l-1.2 2.9H5.3zM12 8.2l1.7 4H10.3z"
+                                    />
+                                </svg>
+                            </span>
+                            <h3>Angular</h3>
+                        </div>
+                        <div
+                            class="code-block"
+                            data-lang="ts"
+                            data-file="app.component.ts"
+                        >
+                            <div class="code-head">
+                                <span class="code-dots"
+                                    ><i></i><i></i><i></i
+                                ></span>
+                                <span class="code-file">app.component.ts</span>
+                                <span class="code-lang">TypeScript</span>
+                                <button class="copy-btn" type="button">
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+                                        <rect
+                                            x="9"
+                                            y="9"
+                                            width="13"
+                                            height="13"
+                                            rx="2"
+                                        />
+                                        <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                                    </svg>
+                                    Copier
+                                </button>
+                            </div>
+                            <pre
+                                class="code"
+                            ><code>import { Component, AfterViewInit } from '@angular/core';
+
+// Déclarer la variable globale pour TypeScript
+declare const GuidedStep: any;
+
+@Component({
+  selector: 'app-root',
+  template: `
+    &lt;button (click)="startTour()" class="btn"&gt;Guide&lt;/button&gt;
+
+    &lt;header gs-step="1" gs-title="En-tête" gs-content="Menu principal"&gt;
+      &lt;h1&gt;Mon App&lt;/h1&gt;
+    &lt;/header&gt;
+  `,
+})
+export class AppComponent implements AfterViewInit {
+  ngAfterViewInit() {
+    GuidedStep.init({
+      persist: true,
+      storageKey: 'my_angular_app_tour',
+    });
+  }
+
+  startTour() {
+    GuidedStep.start(0);
+  }
+}</code></pre>
+                        </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CSS VARIABLES -->
+                <section id="css-variables" class="section">
+                    <div class="section-head">
+                        <span class="kicker"
+                            ><svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <path d="M12 3l9 5v8l-9 5-9-5V8l9-5z" />
+                                <circle cx="12" cy="12" r="3.5" />
+                            </svg>
+                            Personnalisation</span
+                        >
+                        <h2>Personnalisation CSS</h2>
+                        <p>
+                            Toutes les propriétés visuelles sont contrôlées par
+                            des variables CSS surchargeables.
+                        </p>
+                    </div>
+                    <p>
+                        Guidé par les <strong>variables CSS</strong> ci-dessous,
+                        GuidedStep s'adapte à votre charte graphique sans
+                        toucher au JavaScript — par exemple un style éditorial
+                        carré (<code>borderRadius: 0</code>) ou arrondi.
+                    </p>
+
+                    <div
+                        class="code-block"
+                        data-lang="css"
+                        data-file="styles.css"
+                    >
+                        <div class="code-head">
+                            <span class="code-dots"><i></i><i></i><i></i></span>
+                            <span class="code-file">styles.css</span>
+                            <span class="code-lang">CSS</span>
+                            <button class="copy-btn" type="button">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <rect
+                                        x="9"
+                                        y="9"
+                                        width="13"
+                                        height="13"
+                                        rx="2"
+                                    />
+                                    <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                                </svg>
+                                Copier
+                            </button>
+                        </div>
+                        <pre
+                            class="code"
+                        ><code>/* Dans votre feuille de style globale */
+:root {
+  /* Couleurs */
+  --guidedstep-primary: #000000;          /* Bouton principal        */
+  --guidedstep-bg: #ffffff;               /* Fond de la carte         */
+  --guidedstep-overlay: rgba(0, 0, 0, 0.7); /* Obscurcissement        */
+
+  /* Formes */
+  --guidedstep-radius: 0px;               /* 0px carré, 12px doux     */
+
+  /* Typographie (optionnel) */
+  --guidedstep-font-sans: 'Inter', sans-serif;
+}
+
+/* Style spécifique uniquement quand le tutoriel est actif */
+body.guidedstep-active {
+  cursor: default; /* Empêche les interactions en arrière-plan */
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- ACCESSIBILITÉ -->
+                <section id="accessibilite" class="section">
+                    <div class="section-head">
+                        <span class="kicker"
+                            ><svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="M8 15l2-4 2 4M8 13h4" />
+                            </svg>
+                            Engagement</span
+                        >
+                        <h2>Accessibilité (a11y)</h2>
+                        <p>
+                            Accessibilité au cœur du produit, testée contre les
+                            bonnes pratiques WCAG.
+                        </p>
+                    </div>
+
+                    <div class="callout">
+                        <span class="callout-icon">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <circle cx="12" cy="12" r="9" />
+                                <path
+                                    d="M12 8h.01M9.5 15c.8 1 1.6 1.5 2.5 1.5s1.7-.5 2.5-1.5"
+                                />
+                            </svg>
+                        </span>
+                        <div>
+                            <h4>Conforme aux bonnes pratiques WCAG</h4>
+                            <ul>
+                                <li>
+                                    Le conteneur de la carte utilise
+                                    <code>role="dialog"</code> et
+                                    <code>aria-modal="true"</code>.
+                                </li>
+                                <li>
+                                    Le focus est automatiquement piégé et
+                                    déplacé sur le bouton d'action principal à
+                                    chaque étape.
+                                </li>
+                                <li>
+                                    Navigation clavier complète :
+                                    <kbd>Échap</kbd> ferme, <kbd>→</kbd> /
+                                    <kbd>Entrée</kbd> avance,
+                                    <kbd>←</kbd> recule.
+                                </li>
+                                <li>
+                                    Respect de la préférence
+                                    <code>prefers-reduced-motion</code>
+                                    (animations désactivées si paramétrées dans
+                                    l'OS).
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="container footer-inner">
+                <span class="footer-brand">
+                    <span class="brand-mark">
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.1"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <path d="M4 17L12 5l8 12" />
+                            <path d="M9 12h6" />
+                        </svg>
+                    </span>
+                    GuidedStep
+                </span>
+                <p>&copy; 2026 GuidedStep — distribué sous licence MIT.</p>
+                <div class="footer-links">
+                    <a href="https://github.com" target="_blank" rel="noopener"
+                        >GitHub</a
+                    >
+                    <a href="#installation">Changelog</a>
+                    <a href="#installation">Licence</a>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            (function () {
+                "use strict";
+
+                /* ================================================================
+                   1. GÉNÉRATION DE LA NAVIGATION (Sidebar & Drawer)
+                   ================================================================ */
+                var GROUPS = [
+                    {
+                        label: "Pour commencer",
+                        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/></svg>',
+                        items: [
+                            { id: "introduction", label: "Introduction" },
+                            { id: "installation", label: "Installation" },
+                            {
+                                id: "utilisation-base",
+                                label: "Utilisation de base",
+                            },
+                        ],
+                    },
+                    {
+                        label: "Référence",
+                        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/></svg>',
+                        items: [
+                            { id: "attributs-html", label: "Attributs HTML (gs-*)" },
+                            { id: "api-js", label: "API JavaScript" },
+                            { id: "callbacks", label: "Callbacks & événements" },
+                        ],
+                    },
+                    {
+                        label: "Intégration",
+                        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 9l4 3-4 3"/></svg>',
+                        items: [
+                            { id: "frameworks-react", label: "React / Next.js" },
+                            { id: "frameworks-vue", label: "Vue 3 / Nuxt" },
+                            { id: "frameworks-angular", label: "Angular" },
+                        ],
+                    },
+                    {
+                        label: "Personnalisation",
+                        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5v8l-9 5-9-5V8l9-5z"/></svg>',
+                        items: [
+                            { id: "css-variables", label: "Variables CSS" },
+                            { id: "accessibilite", label: "Accessibilité (a11y)" },
+                        ],
+                    },
+                ];
+
+                function buildNav(container) {
+                    var out = "";
+                    GROUPS.forEach(function (g) {
+                        out += '<div><p class="side-group-title">' + g.label + "</p>";
+                        out += '<ul class="side-list">';
+                        g.items.forEach(function (item) {
+                            out +=
+                                '<li><a class="side-link" href="#' +
+                                item.id +
+                                '" data-target="' +
+                                item.id +
+                                '">' +
+                                g.icon +
+                                "<span>" +
+                                item.label +
+                                "</span></a></li>";
+                        });
+                        out += "</ul></div>";
+                    });
+                    container.innerHTML = out;
+                }
+
+                buildNav(document.querySelector(".sidebar"));
+                buildNav(document.querySelector(".drawer-nav"));
+
+                /* ================================================================
+                   2. SCROLLSPY & ANIMATION D'APPARITION (SPA Feel)
+                   ================================================================ */
+                function initScrollspyAndAnimations() {
+                    var links = Array.prototype.slice.call(
+                        document.querySelectorAll(".side-link[data-target]")
+                    );
+                    var targets = [];
+
+                    // Récupérer les cibles uniques
+                    var seen = new Set();
+                    links.forEach(function (link) {
+                        var id = link.getAttribute("data-target");
+                        if (!seen.has(id)) {
+                            var el = document.getElementById(id);
+                            if (el) {
+                                targets.push(el);
+                                seen.add(id);
+                            }
+                        }
+                    });
+
+                    function update() {
+                        var y = window.scrollY + 100; // Offset pour le header sticky
+                        var current = null;
+                        var currentOffset = -1;
+
+                        targets.forEach(function (el) {
+                            if (y >= el.offsetTop - 120) {
+                                if (el.offsetTop >= currentOffset) {
+                                    currentOffset = el.offsetTop;
+                                    current = el.id;
+                                }
+                            }
+                        });
+
+                        if (!current && targets.length) current = targets[0].id;
+
+                        links.forEach(function (link) {
+                            link.classList.toggle(
+                                "active",
+                                link.getAttribute("data-target") === current
+                            );
+                        });
+                    }
+
+                    // Intersection Observer pour l'animation d'apparition des sections
+                    var observer = new IntersectionObserver(
+                        function (entries) {
+                            entries.forEach(function (entry) {
+                                if (entry.isIntersecting) {
+                                    entry.target.classList.add("is-visible");
+                                }
+                            });
+                        },
+                        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+                    );
+
+                    document.querySelectorAll(".section").forEach(function (section) {
+                        observer.observe(section);
+                    });
+
+                    window.addEventListener("scroll", update, { passive: true });
+                    window.addEventListener("resize", update, { passive: true });
+                    update(); // Appel initial
+                }
+                initScrollspyAndAnimations();
+
+                /* ================================================================
+                   3. DRAWER MOBILE
+                   ================================================================ */
+                var burger = document.querySelector(".burger");
+                var drawer = document.getElementById("drawer");
+                var backdrop = document.getElementById("drawerBackdrop");
+                var closeBtn = drawer.querySelector(".close-btn");
+
+                function openDrawer() {
+                    drawer.classList.add("open");
+                    backdrop.classList.add("open");
+                    document.body.style.overflow = "hidden";
+                    burger.setAttribute("aria-expanded", "true");
+                }
+                function closeDrawer() {
+                    drawer.classList.remove("open");
+                    backdrop.classList.remove("open");
+                    document.body.style.overflow = "";
+                    burger.setAttribute("aria-expanded", "false");
+                }
+
+                burger.addEventListener("click", openDrawer);
+                closeBtn.addEventListener("click", closeDrawer);
+                backdrop.addEventListener("click", closeDrawer);
+                drawer.addEventListener("click", function (e) {
+                    if (e.target.closest(".side-link")) closeDrawer();
+                });
+                document.addEventListener("keydown", function (e) {
+                    if (e.key === "Escape") closeDrawer();
+                });
+
+                /* ================================================================
+                   4. COPIER DANS LE PRESSE-PAPIERS
+                   ================================================================ */
+                document.querySelectorAll(".copy-btn").forEach(function (btn) {
+                    btn.addEventListener("click", function () {
+                        var block = btn.closest(".code-block");
+                        if (!block) return;
+                        var code = block.querySelector("code").textContent;
+                        var originalHTML = btn.innerHTML;
+
+                        function done() {
+                            btn.classList.add("copied");
+                            btn.innerHTML =
+                                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Copié !';
+                            setTimeout(function () {
+                                btn.classList.remove("copied");
+                                btn.innerHTML = originalHTML;
+                            }, 1500);
+                        }
+
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText(code).then(done, done);
+                        } else {
+                            var ta = document.createElement("textarea");
+                            ta.value = code;
+                            ta.style.position = "fixed";
+                            ta.style.opacity = "0";
+                            document.body.appendChild(ta);
+                            ta.select();
+                            try {
+                                document.execCommand("copy");
+                            } catch (err) {}
+                            document.body.removeChild(ta);
+                            done();
+                        }
+                    });
+                });
+
+                /* ================================================================
+                   5. COLORATION SYNTAXIQUE LÉGÈRE
+                   ================================================================ */
+                var RULES = [
+                    { cls: "c", re: /&lt;!--[\s\S]*?--&gt;/ },
+                    { cls: "c", re: /\/\*[\s\S]*?\*\// },
+                    {
+                        cls: "s",
+                        re: /(["'])(?:(?!\1)[^\\\n]|\\.)*\1|`(?:\\.|[^`\\])*`/,
+                    },
+                    { cls: "c", re: /\/\/[^\n]*/ },
+                    { cls: "t", re: /&lt;\/?[a-zA-Z][\w-]*/ },
+                    { cls: "a", re: /\s[a-z][a-z0-9-]*=/ },
+                    {
+                        cls: "k",
+                        re: /\b(?:const|let|var|function|return|import|from|export|default|class|extends|new|if|else|for|while|async|await|typeof|void|do|switch|case|break|continue|true|false|null|undefined)\b/,
+                    },
+                ];
+
+                function escapeHtml(s) {
+                    return s
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;");
+                }
+
+                function classify(match) {
+                    for (var i = 0; i < RULES.length; i++) {
+                        if (
+                            new RegExp("^(?:" + RULES[i].re.source + ")$").test(match)
+                        ) {
+                            return RULES[i].cls;
+                        }
+                    }
+                    return null;
+                }
+
+                function highlight(text) {
+                    var src = escapeHtml(text);
+                    var alternatives = [];
+                    RULES.forEach(function (r) {
+                        alternatives.push("(?:" + r.re.source + ")");
+                    });
+                    var combined = new RegExp(alternatives.join("|"), "g");
+
+                    var out = "",
+                        last = 0,
+                        m;
+                    while ((m = combined.exec(src)) !== null) {
+                        out += src.slice(last, m.index);
+                        var cls = classify(m[0]);
+                        out += cls ? '<span class="tok-' + cls + '">' + m[0] + "</span>" : m[0];
+                        last = m.index + m[0].length;
+                        if (m[0].length === 0) combined.lastIndex++;
+                    }
+                    out += src.slice(last);
+                    return out;
+                }
+
+                document.querySelectorAll(".code-block code").forEach(function (el) {
+                    var raw = el.textContent;
+                    var block = el.closest(".code-block");
+                    block.setAttribute("data-raw", raw);
+                    var colored = highlight(raw);
+                    if (block.getAttribute("data-lang") === "terminal") {
+                        colored = colored.replace(/^#.*$/gm, '<span class="tok-c">$&</span>');
+                    }
+                    el.innerHTML = colored;
+                });
+
+                /* ================================================================
+                   Toggle réactif "Bientôt disponible"
+                   ================================================================ */
+                var SOON_KEY = "guidedstep_soon_preview";
+                var soonBlocks = document.querySelectorAll(".soon[data-soon]");
+                var saved = {};
+                try {
+                    saved = JSON.parse(localStorage.getItem(SOON_KEY) || "{}");
+                } catch (e) {
+                    saved = {};
+                }
+
+                function applySoonState(key, enabled) {
+                    saved[key] = enabled;
+                    try {
+                        localStorage.setItem(SOON_KEY, JSON.stringify(saved));
+                    } catch (e) {}
+                    var block = document.querySelector('.soon[data-soon="' + key + '"]');
+                    var input = document.querySelector('[data-soon-toggle="' + key + '"]');
+                    if (block) {
+                        block.classList.toggle("blurred", !enabled);
+                    }
+                    if (input) {
+                        input.checked = enabled;
+                    }
+                }
+
+                soonBlocks.forEach(function (block) {
+                    var key = block.getAttribute("data-soon");
+                    var input = block.querySelector("[data-soon-toggle]");
+                    var enabled = saved[key] === true;
+                    applySoonState(key, enabled);
+                    if (input) {
+                        input.addEventListener("change", function () {
+                            applySoonState(key, input.checked);
+                        });
+                    }
+                });
+
+                /* ================================================================
+                   6. URLs FICHIERS (host récupéré dynamiquement) + copie
+                   ================================================================ */
+                var host = window.location.host || "localhost";
+                var FILES = {
+                    css: host + "/guidedstep.css",
+                    js: host + "/guidedstep.js",
+                };
+
+                document.querySelectorAll("[data-file-url]").forEach(function (el) {
+                    var type = el.getAttribute("data-file-url");
+                    el.textContent = FILES[type] || "";
+                });
+
+                document.querySelectorAll("[data-copy-btn]").forEach(function (btn) {
+                    btn.addEventListener("click", function () {
+                        var type = btn.getAttribute("data-copy-btn");
+                        var original = btn.innerHTML;
+                        copyText((FILES[type] || "") .replace(/^/, "//"));
+                        markCopied(btn, original);
+                    });
+                });
+
+                var copyAllBtn = document.querySelector("[data-copy-all]");
+                if (copyAllBtn) {
+                    copyAllBtn.addEventListener("click", function () {
+                        var text =
+                            '//' + FILES.css + "\n" + "//" + FILES.js;
+                        copyText(text);
+                        var original = copyAllBtn.innerHTML;
+                        markCopied(copyAllBtn, original);
+                    });
+                }
+
+                var localCode = document.getElementById("local-cdn-code");
+                if (localCode) {
+                    var raw = localCode.textContent.split("{HOST}").join(host);
+                    localCode.textContent = raw;
+                    localCode.innerHTML = highlight(raw);
+                    if (localCode.closest(".code-block")) {
+                        localCode.closest(".code-block").setAttribute("data-raw", raw);
+                    }
+                }
+
+                function markCopied(btn, originalHTML) {
+                    btn.classList.add("copied");
+                    btn.innerHTML =
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Copié !';
+                    setTimeout(function () {
+                        btn.classList.remove("copied");
+                        btn.innerHTML = originalHTML;
+                    }, 1500);
+                }
+
+                function copyText(text) {
+                    var done = function () {};
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text).then(done, done);
+                    } else {
+                        var ta = document.createElement("textarea");
+                        ta.value = text;
+                        ta.style.position = "fixed";
+                        ta.style.opacity = "0";
+                        document.body.appendChild(ta);
+                        ta.select();
+                        try {
+                            document.execCommand("copy");
+                        } catch (err) {}
+                        document.body.removeChild(ta);
+                        done();
+                    }
+                }
+            })();
+        </script>
+    </body>
+</html>

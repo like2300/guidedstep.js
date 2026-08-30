@@ -1,0 +1,41 @@
+{
+  "name": "guidedstep.js",
+  "version": "2.4.0",
+  "description": "Bibliothèque JavaScript zéro dépendance pour créer des tutoriels et parcours d'onboarding interactifs et accessibles (a11y).",
+  "main": "guidedstep.js",
+  "style": "guidedstep.css",
+  "files": [
+    "guidedstep.js",
+    "guidedstep.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "tutorial",
+    "onboarding",
+    "tour",
+    "step",
+    "guide",
+    "walkthrough",
+    "gs-step",
+    "onboarding-tour",
+    "product-tour",
+    "interactive-guide"
+  ],
+  "author": "omerlinks",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omerlinks/guidedstep.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/omerlinks/guidedstep.js/issues"
+  },
+  "homepage": "https://omerlinks.github.io/guidedstep.js/",
+  "engines": {
+    "node": ">=12"
+  }
+}
