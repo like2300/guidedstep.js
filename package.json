@@ -1,6 +1,6 @@
 {
   "name": "guidedstep.js",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Bibliothèque JavaScript zéro dépendance pour créer des tutoriels et parcours d'onboarding interactifs et accessibles (a11y).",
   "main": "guidedstep.js",
   "style": "guidedstep.css",
