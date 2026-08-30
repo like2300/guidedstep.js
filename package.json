@@ -29,12 +29,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/omerlinks/guidedstep.js.git"
+    "url": "git+https://github.com/like2300/guidedstep.js.git"
   },
   "bugs": {
-    "url": "https://github.com/omerlinks/guidedstep.js/issues"
+    "url": "https://github.com/like2300/guidedstep.js/issues"
   },
-  "homepage": "https://omerlinks.github.io/guidedstep.js/",
+  "homepage": "https://like2300.github.io/guidedstep.js/",
   "engines": {
     "node": ">=12"
   }
