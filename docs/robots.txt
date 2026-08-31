@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://like2300.github.io/guidedstep.js/sitemap.xml

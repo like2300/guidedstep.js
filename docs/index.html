@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="fr">
     <head>
         <meta charset="UTF-8" />
@@ -22,22 +22,23 @@
         <!-- ============ ROBOTS ============ -->
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
+        <meta name="google-site-verification" content="WFLhfZTW0QLsJAmxtqmM3WGEW7HMqE1LdUDODruoYaM" />
 
         <!-- ============ OPEN GRAPH (Facebook/LinkedIn) ============ -->
         <meta property="og:title" content="GuidedStep.js - Bibliothèque de tutoriels interactifs JavaScript" />
         <meta property="og:description" content="Créez des parcours d'onboarding et des tutoriels interactifs avec GuidedStep.js. Zéro dépendance, accessible et responsive." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://guidedstep.js.org" />
-        <meta property="og:image" content="https://guidedstep.js.org/og-image.png" />
+        <meta property="og:url" content="https://like2300.github.io/guidedstep.js/docs/" />
+        <meta property="og:image" content="https://like2300.github.io/guidedstep.js/docs/7aaced14-3afe-40a9-8633-dc117555e1e3.png" />
 
         <!-- ============ TWITTER CARDS ============ -->
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="GuidedStep.js - Bibliothèque de tutoriels interactifs JavaScript" />
         <meta name="twitter:description" content="Créez des parcours d'onboarding et des tutoriels interactifs avec GuidedStep.js. Zéro dépendance, accessible et responsive." />
-        <meta name="twitter:image" content="https://guidedstep.js.org/og-image.png" />
+        <meta name="twitter:image" content="https://like2300.github.io/guidedstep.js/docs/7aaced14-3afe-40a9-8633-dc117555e1e3.png" />
 
         <!-- ============ CANONICAL ============ -->
-        <link rel="canonical" href="https://guidedstep.js.org/" />
+        <link rel="canonical" href="https://like2300.github.io/guidedstep.js/docs/" />
 
         <!-- ============ FAVICON ============ -->
         <link rel="icon" type="image/png" href="logo.png" />
@@ -200,6 +201,7 @@
                 align-items: center;
                 justify-content: space-between;
                 height: 100%;
+                gap: 10px;
             }
             .brand {
                 display: inline-flex;
@@ -209,6 +211,8 @@
                 font-size: 17px;
                 letter-spacing: -0.02em;
                 color: var(--ink);
+                min-width: 0;
+                flex-shrink: 1;
             }
             .brand-mark {
                 width: 32px;
@@ -219,10 +223,41 @@
                 background: var(--ink);
                 color: #fff;
                 box-shadow: 0 4px 12px rgba(20, 20, 20, 0.2);
+                position: relative;
+                flex-shrink: 0;
             }
             .brand-mark svg {
                 width: 18px;
                 height: 18px;
+            }
+            .brand-mark::after {
+                content: "";
+                position: absolute;
+                inset: -4px;
+                border-radius: 10px;
+                border: 2px solid var(--ok);
+                animation: brandPulse 2.2s ease-out infinite;
+                pointer-events: none;
+            }
+            @keyframes brandPulse {
+                0% {
+                    transform: scale(0.85);
+                    opacity: 0.9;
+                }
+                70% {
+                    transform: scale(1.35);
+                    opacity: 0;
+                }
+                100% {
+                    transform: scale(1.35);
+                    opacity: 0;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .brand-mark::after {
+                    animation: none;
+                    display: none;
+                }
             }
             .version-badge {
                 font:
@@ -234,11 +269,14 @@
                 border-radius: 99px;
                 padding: 2px 8px;
                 letter-spacing: 0.02em;
+                white-space: nowrap;
+                flex-shrink: 0;
             }
             .header-nav {
                 display: flex;
                 align-items: center;
                 gap: 24px;
+                flex-shrink: 0;
             }
             .header-nav a:not(.btn) {
                 color: var(--ink-soft);
@@ -263,6 +301,39 @@
                 }
                 .burger {
                     display: inline-flex;
+                }
+            }
+            @media (max-width: 480px) {
+                .header-inner {
+                    gap: 6px;
+                }
+                .brand {
+                    gap: 8px;
+                    font-size: 15px;
+                }
+                .version-badge {
+                    display: none;
+                }
+                .header-nav {
+                    gap: 8px;
+                }
+                .header-nav .btn-sm {
+                    padding: 7px 12px;
+                    font-size: 13px;
+                }
+            }
+            @media (max-width: 360px) {
+                .header-nav .btn-sm span,
+                .header-nav .btn-sm {
+                    padding: 7px 10px;
+                    font-size: 12.5px;
+                }
+                .brand {
+                    font-size: 14px;
+                }
+                .brand-mark {
+                    width: 28px;
+                    height: 28px;
                 }
             }
 
@@ -311,6 +382,21 @@
                 border-radius: 50%;
                 background: var(--ok);
                 box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+                animation: dotPulse 1.8s ease-in-out infinite;
+            }
+            @keyframes dotPulse {
+                0%,
+                100% {
+                    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+                }
+                50% {
+                    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.25);
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .hero-badge .dot {
+                    animation: none;
+                }
             }
             .hero h1 {
                 margin: 0 0 16px;
@@ -384,6 +470,11 @@
                 max-height: calc(100vh - var(--header-h) - 40px);
                 overflow-y: auto;
                 padding-right: 6px;
+            }
+            @media (max-width: 1024px) {
+                .sidebar {
+                    display: none;
+                }
             }
             .sidebar::-webkit-scrollbar {
                 width: 4px;
@@ -620,6 +711,7 @@
                 border-radius: 10px;
                 box-shadow: var(--shadow-sm);
                 margin: 16px 0;
+                -webkit-overflow-scrolling: touch;
             }
             table.attrs {
                 width: 100%;
@@ -678,10 +770,12 @@
                 padding: 10px 14px;
                 background: rgba(255, 255, 255, 0.03);
                 border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+                flex-wrap: wrap;
             }
             .code-dots {
                 display: flex;
                 gap: 6px;
+                flex-shrink: 0;
             }
             .code-dots i {
                 width: 10px;
@@ -703,6 +797,11 @@
                     500 11.5px "Inter",
                     sans-serif;
                 color: #8b949e;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                min-width: 0;
+                flex-shrink: 1;
             }
             .code-lang {
                 margin-left: auto;
@@ -712,6 +811,8 @@
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
                 color: #6e7681;
+                flex-shrink: 0;
+                white-space: nowrap;
             }
             .copy-btn {
                 display: inline-flex;
@@ -727,6 +828,8 @@
                     sans-serif;
                 cursor: pointer;
                 transition: all 0.15s;
+                flex-shrink: 0;
+                white-space: nowrap;
             }
             .copy-btn:hover {
                 background: rgba(255, 255, 255, 0.12);
@@ -745,6 +848,7 @@
                 margin: 0;
                 padding: 16px 18px;
                 overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
             }
             pre.code code {
                 font:
@@ -926,22 +1030,6 @@
                 line-height: 1.65;
                 white-space: pre;
             }
-            @media (max-width: 640px) {
-                .callout.ai-install {
-                    flex-direction: column;
-                    align-items: flex-start;
-                }
-                .callout.ai-install .btn {
-                    width: 100%;
-                }
-                .ai-prompt {
-                    padding: 12px;
-                }
-                .ai-prompt pre.code {
-                    max-height: 320px;
-                }
-            }
-
             .soon {
                 position: relative;
             }
@@ -1111,6 +1199,242 @@
                 margin: 0;
                 color: var(--muted);
                 font-size: 13px;
+            }
+
+            @media (max-width: 768px) {
+                .hero {
+                    padding: 48px 0 32px;
+                }
+                .hero .lead {
+                    font-size: 1rem;
+                }
+                .content {
+                    gap: 56px;
+                }
+                .feature {
+                    padding: 16px;
+                }
+                .callout {
+                    padding: 14px 16px;
+                }
+                .code-block {
+                    margin: 12px 0 20px;
+                }
+                pre.code {
+                    padding: 14px 16px;
+                }
+            }
+
+            @media (max-width: 640px) {
+                .hero {
+                    padding: 36px 0 24px;
+                }
+                .hero h1 {
+                    font-size: 1.75rem;
+                }
+                .hero-cta {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .hero-cta .btn {
+                    width: 100%;
+                    max-width: 280px;
+                }
+                .hero-stats {
+                    gap: 8px;
+                    margin-top: 28px;
+                }
+                .stat {
+                    padding: 12px 8px;
+                }
+                .stat b {
+                    font-size: 16px;
+                }
+                .content {
+                    gap: 40px;
+                }
+                .section {
+                    scroll-margin-top: calc(var(--header-h) + 12px);
+                }
+                .section-head h2 {
+                    font-size: 1.4rem;
+                }
+                .section-head p {
+                    font-size: 14.5px;
+                }
+                h3.sub {
+                    font-size: 15px;
+                    margin: 24px 0 10px;
+                }
+                .feature-grid {
+                    gap: 12px;
+                    margin-top: 18px;
+                }
+                .feature {
+                    padding: 14px;
+                }
+                .feature h3 {
+                    font-size: 14px;
+                }
+                .feature p {
+                    font-size: 13px;
+                }
+                .table-wrap {
+                    margin: 12px 0;
+                }
+                table.attrs {
+                    font-size: 12.5px;
+                    min-width: 420px;
+                }
+                table.attrs th,
+                table.attrs td {
+                    padding: 10px 12px;
+                }
+                .code-block {
+                    margin: 12px 0 18px;
+                    border-radius: 8px;
+                }
+                pre.code {
+                    padding: 12px 14px;
+                }
+                pre.code code {
+                    font-size: 12px;
+                }
+                .api-list li {
+                    padding: 12px 14px;
+                    font-size: 13px;
+                    gap: 10px;
+                }
+                .callout {
+                    flex-direction: column;
+                    gap: 10px;
+                    padding: 14px 16px;
+                }
+                .callout-icon {
+                    margin-top: 0;
+                }
+                .callout h4 {
+                    font-size: 13px;
+                }
+                .callout li {
+                    font-size: 13px;
+                }
+                .callout.ai-install {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                .callout.ai-install .btn {
+                    width: 100%;
+                }
+                .ai-prompt {
+                    padding: 12px;
+                }
+                .ai-prompt pre.code {
+                    max-height: 320px;
+                }
+                .ai-prompt .code {
+                    font-size: 11.5px;
+                }
+                .server-files {
+                    gap: 8px;
+                    margin: 12px 0 18px;
+                }
+                .file-copy {
+                    flex-wrap: wrap;
+                    gap: 8px;
+                    padding: 8px 12px;
+                }
+                .file-label {
+                    font-size: 11px;
+                }
+                .file-url {
+                    font-size: 11px;
+                    flex: 1 1 0;
+                    min-width: 0;
+                }
+                .fw-block {
+                    margin-bottom: 24px;
+                }
+                .fw-title h3 {
+                    font-size: 15px;
+                }
+                .soon-badge {
+                    top: 10px;
+                    right: 10px;
+                    padding: 5px 10px;
+                    font-size: 10px;
+                }
+                .footer-inner {
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                    gap: 14px;
+                }
+                .footer-links {
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    gap: 14px 20px;
+                }
+            }
+
+            @media (max-width: 420px) {
+                .hero {
+                    padding: 28px 0 20px;
+                }
+                .hero h1 {
+                    font-size: 1.5rem;
+                }
+                .hero .lead {
+                    font-size: 0.92rem;
+                }
+                .hero-badge {
+                    font-size: 11px;
+                    padding: 5px 12px;
+                }
+                .stat b {
+                    font-size: 14px;
+                }
+                .stat {
+                    font-size: 11px;
+                    padding: 10px 6px;
+                }
+                .content {
+                    gap: 32px;
+                }
+                .feature-grid {
+                    grid-template-columns: 1fr;
+                }
+                .file-copy {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+                .file-copy .copy-btn {
+                    align-self: flex-end;
+                }
+                .code-head {
+                    flex-wrap: wrap;
+                    gap: 6px;
+                    padding: 8px 12px;
+                }
+                .code-file {
+                    font-size: 10.5px;
+                }
+                .code-lang {
+                    font-size: 9px;
+                }
+                pre.code {
+                    padding: 10px 12px;
+                }
+                pre.code code {
+                    font-size: 11px;
+                }
+                .api-list li {
+                    flex-direction: column;
+                    gap: 6px;
+                }
+                .api-list li svg {
+                    margin-top: 0;
+                }
             }
 
             @media (prefers-reduced-motion: reduce) {
@@ -1573,7 +1897,18 @@ Suis scrupuleusement ces étapes :
 - Vérifie que la progression est sauvegardée (localStorage)
   et que le bouton flottant réapparaît après la fin du guide.
 - Livre les fichiers modifiés + un bref résumé de ce qui a
-  été changé.</code></pre>
+  été changé.
+
+7) DEMO / FICHIERS LOCAUX
+- Le tutoriel ne se charge PAS via CDN : il utilise les
+  fichiers locaux `guidedstep.css` et `guidedstep.js` placés
+  dans le même dossier que la page (comme dans `demo.html`).
+- Base-toi sur `demo.html` (la démo de référence) pour copier
+  sa structure : lien `&lt;link rel="stylesheet" href="guidedstep.css"&gt;`
+  dans le `&lt;head&gt;` et `&lt;script src="guidedstep.js"&gt;&lt;/script&gt;`
+  avant `&lt;/body&gt;`.
+- Si tu veux un aperçu fonctionnel, crée aussi une page
+  `demo.html` qui charge ces fichiers locaux et lance le guide.</code></pre>
                     </div>
 
                     <div class="callout">
@@ -1698,10 +2033,10 @@ Suis scrupuleusement ces étapes :
                         <pre
                             class="code"
                         ><code>&lt;!-- Dans le &lt;head&gt; (CSS) --&gt;
-&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/guidedstep.js@latest/dist/guidedstep.min.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/guidedstep.js@2.4.1/guidedstep.css"&gt;
 
 &lt;!-- Avant la fermeture de &lt;/body&gt; (JS) --&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/guidedstep.js@latest/dist/guidedstep.min.js"&gt;&lt;/script&gt;</code></pre>
+&lt;script src="https://cdn.jsdelivr.net/npm/guidedstep.js@2.4.1/guidedstep.js"&gt;&lt;/script&gt;</code></pre>
                     </div>
 
                     <h3 class="sub">Mode local (depuis votre hôte)</h3>
@@ -2624,22 +2959,15 @@ body.guidedstep-active {
             <div class="container footer-inner">
                 <span class="footer-brand">
                     <span class="brand-mark">
-                        <svg
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2.1"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <path d="M4 17L12 5l8 12" />
-                            <path d="M9 12h6" />
-                        </svg>
+                        <img
+                            src="logo.png"
+                            alt="Logo GuidedStep"
+                            style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px"
+                        />
                     </span>
                     GuidedStep
                 </span>
-                <p>&copy; 2026 GuidedStep — distribué sous licence MIT.</p>
+                <p>&copy; <span id="year">2026</span> GuidedStep — distribué sous licence MIT.</p>
                 <div class="footer-links">
                     <a href="https://github.com/omerlink/guidedstep.js" target="_blank" rel="noopener noreferrer">GitHub</a>
                     <a href="#installation">Changelog</a>
@@ -3025,6 +3353,11 @@ body.guidedstep-active {
                     if (localCode.closest(".code-block")) {
                         localCode.closest(".code-block").setAttribute("data-raw", raw);
                     }
+                }
+
+                var yearEl = document.getElementById("year");
+                if (yearEl) {
+                    yearEl.textContent = new Date().getFullYear();
                 }
             })();
         </script>

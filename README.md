@@ -34,6 +34,13 @@ Puis importez le CSS et le JS :
 <script src="node_modules/guidedstep.js/guidedstep.js"></script>
 ```
 
+### Via CDN (jsDelivr)
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/guidedstep.js@2.4.1/guidedstep.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/guidedstep.js@2.4.1/guidedstep.css" rel="stylesheet" />
+```
+
 ### Mode local (CDN / hôte)
 
 ```html
